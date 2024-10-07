@@ -17,5 +17,5 @@ def init_db(app):
     admin_collection = db.admin_db
     users_collection = db.users
     schoolformdb=client.chessschool
-    schoolform_coll=schoolformdb.kids
+    schoolform_coll=schoolformdb.kids 
     fs = GridFS(db)
