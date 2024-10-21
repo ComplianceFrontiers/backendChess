@@ -17,16 +17,23 @@ inschool_bp = Blueprint('inschool', __name__)
 # Email configuration
 SENDER_EMAIL = os.getenv('SENDER_EMAIL', 'connect@chesschamps.us')
 SENDER_PASSWORD = os.getenv('SENDER_PASSWORD', 'iyln tkpp vlpo sjep')
-
+DISPLAY_NAME = "Chess Champs Academy"
 # Utility function to send OTP via email
 def send_otp(email, otp):
     try:
-        subject = "Your OTP for Sign-In to Online Portal"
-        body = f"Your OTP is {otp} "
+        subject = "Your OTP for Chess Champs Academy Portal Access"
+        body = f"Dear Patron,
+        Thank you for reaching out to us. As requested, please find below your One-Time Password (OTP) for accessing the Chess Champs Academy portal:
+        OTP: {otp}
+        This OTP can be used to complete your login process. If you encounter any issues or need further assistance, feel free to contact our support team.
+        Warm regards,
+
+        Training Team
+        Chess Champs Academy"
 
         # Set up the MIME
         msg = MIMEMultipart()
-        msg['From'] = SENDER_EMAIL
+        msg['From'] = f'{DISPLAY_NAME} <{SENDER_EMAIL}>'
         msg['To'] = email
         msg['Subject'] = subject
         msg.attach(MIMEText(body, 'plain'))
