@@ -22,14 +22,18 @@ DISPLAY_NAME = "Chess Champs Academy"
 def send_otp(email, otp):
     try:
         subject = "Your OTP for Chess Champs Academy Portal Access"
-        body = f"Dear Patron,
-        Thank you for reaching out to us. As requested, please find below your One-Time Password (OTP) for accessing the Chess Champs Academy portal:
-        OTP: {otp}
-        This OTP can be used to complete your login process. If you encounter any issues or need further assistance, feel free to contact our support team.
-        Warm regards,
+        body = f"""Dear Patron,
+        
+Thank you for reaching out to us. As requested, please find below your One-Time Password (OTP) for accessing the Chess Champs Academy portal:
 
-        Training Team
-        Chess Champs Academy"
+OTP: {otp}
+
+This OTP can be used to complete your login process. If you encounter any issues or need further assistance, feel free to contact our support team.
+
+Warm regards,
+Training Team
+Chess Champs Academy
+"""
 
         # Set up the MIME
         msg = MIMEMultipart()
@@ -40,11 +44,11 @@ def send_otp(email, otp):
 
         # Connect to Gmail's SMTP server
         server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(SENDER_EMAIL, SENDER_PASSWORD)
-        text = msg.as_string()
-        server.sendmail(SENDER_EMAIL, email, text)
-        server.quit()
+        server.starttls()  # Start TLS for security
+        server.login(SENDER_EMAIL, SENDER_PASSWORD)  # Log in to the SMTP server
+        text = msg.as_string()  # Convert the message to string format
+        server.sendmail(SENDER_EMAIL, email, text)  # Send the email
+        server.quit()  # Terminate the SMTP session
 
         print("OTP sent successfully.")
     except Exception as e:
