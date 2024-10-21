@@ -241,21 +241,28 @@ def update_forms():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 def send_email(email, online_portal_link):
+    DISPLAY_NAME="Chess Champs Academy"
     sender_email = "connect@chesschamps.us"
     sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
-    subject = "Access Your Online Portal"
+    subject = "Your Access Credentials for Chess Champs Academy Portal"
 
     body = (
-        f"Dear Participant,\n\n"
-        f"Here is the link to access the portal: {online_portal_link}\n\n"
-        f"You can sign in using your email address: {email}\n\n"
-        f"Best regards,\n"
-        f"Training Team\n"
-        f"Delaware Chess Champ"
-    )
+            f"Dear Patron,\n\n"
+            f"We are pleased to provide you with the access credentials for the Chess Champs Academy portal. Below are your login details:\n"
+            f"• Access Link: {online_portal_link}\n"
+            f"• Access Email: {email}\n\n"
+            f"Please use these credentials to log in to the portal and explore the resources available. An OTP will be generated upon your first login. "
+            f"You will remain logged in unless you click 'Logout' or access the portal from a different device. For security purposes, we kindly recommend not sharing the link with others.\n\n"
+            f"Our training videos are optimized for desktop viewing, though a mobile version is available. Please note the mobile experience may be slightly glitchy, and we are actively working to improve it. "
+            f"Thank you for your patience and continued support.\n\n"
+            f"If you have any questions or need further assistance, feel free to contact our support team.\n\n"
+            f"Warm Regards,\n"
+            f"Training Team\n"
+            f"Chess Champs Academy"
+        )
 
     msg = MIMEMultipart()
-    msg['From'] = sender_email
+    msg['From'] = f'{DISPLAY_NAME} <{sender_email}>'
     msg['To'] = email
     msg['Subject'] = subject
     msg.attach(MIMEText(body, 'plain'))
