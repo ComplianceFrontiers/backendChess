@@ -30,7 +30,7 @@ OTP: {otp}
 
 This OTP can be used to complete your login process. If you encounter any issues or need further assistance, feel free to contact our support team.
 
-Warm regards,
+Warm regards , 
 Training Team
 Chess Champs Academy
 """

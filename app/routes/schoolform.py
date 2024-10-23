@@ -256,7 +256,7 @@ def send_email(email, online_portal_link):
             f"Our training videos are optimized for desktop viewing, though a mobile version is available. Please note the mobile experience may be slightly glitchy, and we are actively working to improve it. "
             f"Thank you for your patience and continued support.\n\n"
             f"If you have any questions or need further assistance, feel free to contact our support team.\n\n"
-            f"Warm Regards,\n"
+            f"Warm Regards ,\n"
             f"Training Team\n"
             f"Chess Champs Academy"
         )
