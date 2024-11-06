@@ -192,6 +192,54 @@ def send_email_school_form_mpes():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
+@schoolform_bp.route('/send-email-form-jcc', methods=['POST'])
+def send_email_school_form_jcc():
+    data = request.json
+    email = data.get('email')
+   
+
+    if not email:
+        return jsonify({"error": "Email is required"}), 400
+
+    try:
+        # Email configuration
+        sender_email = "connect@chesschamps.us"
+        sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
+        subject = "Thank You for Enrolling Your Child in the Mount Pleasant Elementary School Program!"
+
+        body = (
+            "Dear Parents,\n\n"
+            "We are excited to welcome your child to the after-school chess program at Mount Pleasant Elementary! Thank you for trusting us with your child's chess development and for encouraging their interest in this wonderful game.\n\n"
+            "At Chess Champs, we believe that chess not only sharpens minds but also nurtures critical thinking, problem-solving, and concentration skills. Our program is designed to be both fun and educational, and we are committed to making this an enriching experience for your child.\n\n"
+            "Classes will begin on Oct 09th, and we have a fantastic lineup of activities planned. Throughout the program, your child will learn valuable chess strategies, participate in friendly matches, and develop their confidence both on and off the board.\n\n"
+            "Please don't hesitate to reach out to us if you have any questions or need further information.\n\n"
+            "Once again, thank you for enrolling your child in our program. We look forward to an exciting journey ahead!\n\n"
+            "Best regards,\n"
+            "Training Team\n"
+            "Delaware Chess Champs"
+        )
+
+        # Create the email
+        msg = MIMEMultipart()
+        msg['From'] = sender_email
+        msg['To'] = email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Connect to the SMTP server and send the email
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        text = msg.as_string()
+        server.sendmail(sender_email, email, text)
+        server.quit()
+
+        return jsonify({"message": "Email sent successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @schoolform_bp.route('/update_forms', methods=['POST'])
 def update_forms():
     try:
