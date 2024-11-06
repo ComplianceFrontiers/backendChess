@@ -204,9 +204,10 @@ def send_email_school_form_jcc():
 
     try:
         # Email configuration
+        DISPLAY_NAME="Chess Champs Academy"
         sender_email = "connect@chesschamps.us"
         sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
-        subject = "Thanks for expressing your interest in the Chess Program at JCC!"
+        subject = "Chess Program at JCC!"
         body = (
                 "Dear Parents,\n\n"
                 "We are excited to welcome your child to the chess program at J!\n\n"
@@ -224,7 +225,7 @@ def send_email_school_form_jcc():
 
         # Create the email
         msg = MIMEMultipart()
-        msg['From'] = sender_email
+        msg['From'] = f'{DISPLAY_NAME} <{sender_email}>'
         msg['To'] = email
         msg['Subject'] = subject
         msg.attach(MIMEText(body, 'plain'))
