@@ -27,38 +27,37 @@ def home1():
 def signup_app():
     try:
         # Parse the incoming JSON data
-        
         data = request.get_json()
         print(data)
 
         # Extract and validate required fields
         name = data.get('name')
         email = data.get('email')
+
+        # Validate only required fields
+        if not name or not email:
+            return jsonify({"error": "Name and email are required"}), 400
+
+        # Optional fields
         phone = data.get('phone')
         school = data.get('school')
         grade = data.get('grade')
-
-        # Optional: Perform validation on the data (e.g., check if email is valid)
-        if not name or not email or not phone or not school or not grade:
-            return jsonify({"error": "All fields are required"}), 400
 
         # Generate a unique profile_id
         profile_id = generate_unique_profile_id_1()
 
         # Prepare document for MongoDB insertion
         form_data = {
-            "profile_id": profile_id,  # Add the unique profile_id here
+            "profile_id": profile_id,
             "name": name,
             "email": email,
             "phone": phone,
             "school": school,
-            "grade": grade        }
+            "grade": grade
+        }
 
         # Insert into MongoDB
         app_signup.insert_one(form_data)
-
-        # Optionally, you can send a confirmation email here
-        # send_email(email, "Welcome to Chess App!", "Thank you for signing up!")
 
         return jsonify({"message": "Form submitted successfully!", "profile_id": profile_id}), 201
 
