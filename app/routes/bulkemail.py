@@ -32,6 +32,7 @@ def signup_bulk_email():
 
         
         email = data.get('email')
+        subscriber=data.get('subscriber')
 
         # Validate only required fields
         if not email:
@@ -46,6 +47,7 @@ def signup_bulk_email():
         form_data = {
             "profile_id": profile_id,
             "email": email,
+            "subscriber":subscriber,
         }
 
         # Insert into MongoDB
