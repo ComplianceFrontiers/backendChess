@@ -29,6 +29,7 @@ def create_app():
     from app.routes.Learn_chess import learn_bp
     from app.routes.inschool import inschool_bp
     from app.routes.app_chess import appchess_bp
+    from app.routes.bulkemail import bulkemail_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(images_bp)
@@ -43,6 +44,7 @@ def create_app():
     app.register_blueprint(learn_bp)
     app.register_blueprint(inschool_bp)
     app.register_blueprint(appchess_bp)
+    app.register_blueprint(bulkemail_bp)
 
 
     return app

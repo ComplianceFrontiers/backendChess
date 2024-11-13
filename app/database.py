@@ -10,9 +10,10 @@ users_collection = None
 schoolform_coll=None
 demo_user=None
 app_signup=None
+bulkemail=None
 
 def init_db(app):
-    global client, db, fs, admin_collection, users_collection,schoolform_coll,demo_user,app_signup
+    global client, db, fs, admin_collection, users_collection,schoolform_coll,demo_user,app_signup,bulkemail
     mongo_uri = os.getenv('MONGO_URI')
     client = MongoClient(mongo_uri)
     db = client.chessDb
@@ -23,4 +24,5 @@ def init_db(app):
     schoolform_coll=schoolformdb.kids 
     demo_user=db1.demo_user
     app_signup=schoolformdb.app_signup
+    bulkemail=schoolformdb.bulkemail
     fs = GridFS(db)
