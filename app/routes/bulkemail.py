@@ -39,30 +39,51 @@ def signup_bulk_email():
         if not all([name, email, phone]):
             return jsonify({"error": "Name, email, and phone are required"}), 400
 
-        # Generate a unique profile_id
-        profile_id = generate_unique_profile_id_1()
+        # Check if the email already exists in the database
+        existing_record = bulkemail.find_one({"email": email})
 
-        # Prepare the document with required fields
-        form_data = {
-            "profile_id": profile_id,
-            "name": name,
-            "email": email,
-            "phone": phone,
-        }
+        if existing_record:
+            # If the email exists, update the existing record
+            updated_data = {
+                "name": name,
+                "email": email,
+                "phone": phone,
+            }
 
-        # Add optional fields dynamically
-        for key, value in data.items():
-            if key not in ['name', 'email', 'phone']:  # Skip required fields
-                form_data[key] = value
+            # Update optional fields dynamically
+            for key, value in data.items():
+                if key not in ['name', 'email', 'phone']:  # Skip required fields
+                    updated_data[key] = value
 
-        # Insert the document into MongoDB
-        bulkemail.insert_one(form_data)
+            # Update the record in the database
+            bulkemail.update_one({"email": email}, {"$set": updated_data})
 
-        return jsonify({"message": "Form submitted successfully!", "profile_id": profile_id}), 201
+            return jsonify({"message": "Record updated successfully!"}), 200
+        else:
+            # If the email does not exist, insert a new record
+            profile_id = generate_unique_profile_id_1()  # Generate a unique profile ID
+
+            # Prepare the document with required fields
+            form_data = {
+                "profile_id": profile_id,
+                "name": name,
+                "email": email,
+                "phone": phone,
+            }
+
+            # Add optional fields dynamically
+            for key, value in data.items():
+                if key not in ['name', 'email', 'phone']:  # Skip required fields
+                    form_data[key] = value
+
+            # Insert the document into MongoDB
+            bulkemail.insert_one(form_data)
+
+            return jsonify({"message": "Form submitted successfully!", "profile_id": profile_id}), 201
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-    
+ 
 @bulkemail_bp.route('/get_forms2', methods=['GET'])
 def get_forms2():
     try:
