@@ -94,3 +94,25 @@ def get_forms2():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@bulkemail_bp.route('/get_forms_byemail', methods=['GET'])
+def get_forms_byemail():
+    try:
+        # Extract email from the query parameters
+        email = request.args.get('email')  # Get email from the URL query string
+
+        # Check if email is provided
+        if not email:
+            return jsonify({"error": "Email is required"}), 400
+
+        # Fetch documents from the collection where email matches
+        record = bulkemail.find_one({"email": email}, {'_id': 0})  # Exclude the MongoDB ID field
+        
+        if not record:
+            return jsonify({"error": "No record found for this email"}), 404
+
+        return jsonify(record), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
