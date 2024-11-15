@@ -30,34 +30,39 @@ def signup_bulk_email():
         data = request.get_json()
         print(data)
 
-        
+        # Extract required fields
+        name = data.get('name')
         email = data.get('email')
-        subscriber=data.get('subscriber')
+        phone = data.get('phone')
 
-        # Validate only required fields
-        if not email:
-            return jsonify({"error": "Name and email are required"}), 400
-
-     
+        # Validate required fields
+        if not all([name, email, phone]):
+            return jsonify({"error": "Name, email, and phone are required"}), 400
 
         # Generate a unique profile_id
         profile_id = generate_unique_profile_id_1()
 
-        # Prepare document for MongoDB insertion
+        # Prepare the document with required fields
         form_data = {
             "profile_id": profile_id,
+            "name": name,
             "email": email,
-            "subscriber":subscriber,
+            "phone": phone,
         }
 
-        # Insert into MongoDB
+        # Add optional fields dynamically
+        for key, value in data.items():
+            if key not in ['name', 'email', 'phone']:  # Skip required fields
+                form_data[key] = value
+
+        # Insert the document into MongoDB
         bulkemail.insert_one(form_data)
 
         return jsonify({"message": "Form submitted successfully!", "profile_id": profile_id}), 201
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-
+    
 @bulkemail_bp.route('/get_forms2', methods=['GET'])
 def get_forms2():
     try:
