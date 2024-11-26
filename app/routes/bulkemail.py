@@ -116,3 +116,33 @@ def get_forms_byemail():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@bulkemail_bp.route('/reviewfromemail', methods=['POST'])
+def review_from_email():
+    try:
+        # Parse the JSON data from the request
+        data = request.json
+
+        # Extract required fields
+        email = data.get('email')
+        rate = data.get('rate')
+        review = data.get('review')
+
+        # Validate inputs
+        if not email or not rate or not review:
+            return jsonify({"error": "Email, rate, and review are required"}), 400
+
+        # Find the record by email
+        record = bulkemail.find_one({"email": email})
+        if not record:
+            return jsonify({"error": "No record found for the provided email"}), 404
+
+        # Update the record with the review and rate
+        bulkemail.update_one(
+            {"email": email},
+            {"$set": {"rate": rate, "review": review}}
+        )
+
+        return jsonify({"message": "Review and rating submitted successfully!"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
