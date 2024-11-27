@@ -79,7 +79,40 @@ def get_forms():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
+
+@schoolform_bp.route('/update_student_records', methods=['PUT'])
+def update_student_records():
+    try:
+        # Parse request JSON
+        data = request.json
+        email = data.get("email")  # Get the email from the request body
+
+        if not email:
+            return jsonify({"error": "Email is required"}), 400
+
+        # Remove email from the update data to avoid updating it accidentally
+        update_data = {key: value for key, value in data.items() if key != "email"}
+
+        if not update_data:
+            return jsonify({"error": "No fields to update"}), 400
+
+        # Update the document where the email matches
+        result = schoolform_coll.update_one(
+            {"email": email},  # Filter by email
+            {"$set": update_data}  # Update the provided fields
+        )
+
+        # Check if a document was modified
+        if result.matched_count == 0:
+            return jsonify({"error": "No document found for the given email"}), 404
+
+        return jsonify({"message": "Document updated successfully"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @schoolform_bp.route('/get_forms_group', methods=['GET'])
 def get_forms_by_group():
     try:
