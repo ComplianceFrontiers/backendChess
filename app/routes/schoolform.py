@@ -112,7 +112,6 @@ def update_student_records():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
 @schoolform_bp.route('/get_forms_group', methods=['GET'])
 def get_forms_by_group():
     try:
