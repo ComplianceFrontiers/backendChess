@@ -87,7 +87,7 @@ def signinschool():
                 else:
                     return jsonify({'success': True, 'message': 'OTP already sent.', 'otp_required': True}), 200
         else:
-            return jsonify({'success': False,'data':user, 'message': 'Email is not registered in the In School Program group.'}), 400
+            return jsonify({'success': False,'data':"new", 'message': 'Email is not registered in the In School Program group.'}), 400
     else:
         return jsonify({'success': False, 'message': 'Email is not registered.'}), 400
 
