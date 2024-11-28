@@ -47,7 +47,7 @@ def new_app_user():
         
         if existing_user:
             # Email exists, return success with "old"
-            return jsonify({"success": "old"}), 200
+            return jsonify({"success": "old"}), 201
         else:
             # Generate a unique profile_id
             profile_id = generate_unique_profile_id()
