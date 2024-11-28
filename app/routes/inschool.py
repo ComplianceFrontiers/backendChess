@@ -62,27 +62,35 @@ def signinschool():
     
     # Retrieve the user from the database
     user = schoolform_coll.find_one({'email': email})
-    
-    if user["group"]=="In School Program":
-        # Check if 'session_id' exists
-        if 'session_id' in user:
-            return jsonify({'success': True, 'device': True,'device_name':user['device_name']}), 200
-        else:
-            # Generate a new UUID for session_id
-            session_id = str(uuid.uuid4())
-            schoolform_coll.update_one({'email': email}, {'$set': {'session_id': session_id,'device_name':device_name}})
-            
-            # Continue with the OTP process
-            if 'otp' not in user or user['otp'] is None:
-                otp = random.randint(100000, 999999)
-                schoolform_coll.update_one({'email': email}, {'$set': {'otp': otp}})
-                send_otp(email, otp)
-                return jsonify({'success': True, 'message': 'OTP sent to email.', 'otp_required': True}), 200
+
+    if user:
+        # Check if 'group' exists and set to "New App User" if not
+        if 'group' not in user or not user['group']:
+            schoolform_coll.update_one({'email': email}, {'$set': {'group': 'New App User','level':'Level 1','payment_status':'YES'}})
+            user['group'] = 'New App User'  # Update the local variable for further logic
+
+        if user["group"] == "In School Program":
+            # Check if 'session_id' exists
+            if 'session_id' in user:
+                return jsonify({'success': True, 'device': True, 'device_name': user['device_name']}), 200
             else:
-                return jsonify({'success': True, 'message': 'OTP already sent.', 'otp_required': True}), 200
+                # Generate a new UUID for session_id
+                session_id = str(uuid.uuid4())
+                schoolform_coll.update_one({'email': email}, {'$set': {'session_id': session_id, 'device_name': device_name}})
+                
+                # Continue with the OTP process
+                if 'otp' not in user or user['otp'] is None:
+                    otp = random.randint(100000, 999999)
+                    schoolform_coll.update_one({'email': email}, {'$set': {'otp': otp}})
+                    send_otp(email, otp)
+                    return jsonify({'success': True, 'message': 'OTP sent to email.', 'otp_required': True}), 200
+                else:
+                    return jsonify({'success': True, 'message': 'OTP already sent.', 'otp_required': True}), 200
+        else:
+            return jsonify({'success': False, 'message': 'Email is not registered in the In School Program group.'}), 400
     else:
         return jsonify({'success': False, 'message': 'Email is not registered.'}), 400
-    
+
 
 @inschool_bp.route('/delete_session_inschool', methods=['POST'])
 def delete_session_inschool():
