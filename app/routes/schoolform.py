@@ -27,15 +27,15 @@ def submit_form():
         data = request.json
 
         # Extract and validate required fields
-        parent_first_name = data.get('parent_first_name')
-        parent_last_name = data.get('parent_last_name')
-        child_first_name = data.get('child_first_name')
-        child_last_name = data.get('child_last_name')
-        child_grade = data.get('child_grade')
-        email = data.get('email')
-        phone = data.get('phone')
-        RequestFinancialAssistance = data.get('RequestFinancialAssistance')
-        SchoolName = data.get('SchoolName')
+        parent_first_name = data.get('parent_first_name',"")
+        parent_last_name = data.get('parent_last_name',"")
+        child_first_name = data.get('child_first_name',"")
+        child_last_name = data.get('child_last_name',"")
+        child_grade = data.get('child_grade',"")
+        email = data.get('email',"")
+        phone = data.get('phone',"")
+        RequestFinancialAssistance = data.get('RequestFinancialAssistance',"")
+        SchoolName = data.get('SchoolName',"")
         PaymentStatus = data.get('redirect_status','Not started')
 
         # Optional: Perform validation on the data here (e.g., check if email is valid)
