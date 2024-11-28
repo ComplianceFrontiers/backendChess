@@ -37,8 +37,6 @@ def submit_form():
         RequestFinancialAssistance = data.get('RequestFinancialAssistance',"")
         SchoolName = data.get('SchoolName',"")
         PaymentStatus = data.get('redirect_status','Not started')
-        if schoolform_coll.find_one({"email": email}):
-            return jsonify({"message": "Form submitted successfully!", "profile_id": profile_id}), 201
 
         # Optional: Perform validation on the data here (e.g., check if email is valid)
 
