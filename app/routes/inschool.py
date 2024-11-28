@@ -67,7 +67,7 @@ def signinschool():
         # Check if 'group' exists and set to "New App User" if not
         if 'group' not in user or not user['group']:
             schoolform_coll.update_one({'email': email}, {'$set': {'group': 'New App User','level':'Level 1','payment_status':'YES'}})
-            user['group'] = 'New App User'  # Update the local variable for further logic
+            user['group'] = 'new'  # Update the local variable for further logic
 
         if user["group"] == "In School Program":
             # Check if 'session_id' exists
