@@ -38,7 +38,7 @@ def submit_form():
         SchoolName = data.get('SchoolName',"")
         PaymentStatus = data.get('redirect_status','Not started')
         program=data.get('program','program not selected')
-        Year=data.get('year',"2025")
+        Year=data.get('year',2025)
 
         # Optional: Perform validation on the data here (e.g., check if email is valid)
 
