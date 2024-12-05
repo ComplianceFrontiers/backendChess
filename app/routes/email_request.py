@@ -8,7 +8,7 @@ from email.mime.text import MIMEText
 import smtplib
 from app.utils.email_utils import send_email
 
-email_request = Blueprint('email_request', __name__)
+email_request_bp = Blueprint('email_request', __name__)
 
 # Function to generate a random 6-digit profile_id
 def generate_unique_profile_id():
@@ -17,7 +17,7 @@ def generate_unique_profile_id():
         # Check if the profile_id already exists in the database
         return profile_id
         
-@email_request.route('/r121')
+@email_request_bp.route('/r121')
 def home121():
     return "Hello, ramya!"
 
@@ -51,7 +51,7 @@ def send_email_to_admin(subject, question):
     except Exception as e:
         print(f"Failed to send email: {str(e)}")
 
-@email_request.route('/submit_question_email', methods=['POST'])
+@email_request_bp.route('/submit_question_email', methods=['POST'])
 def submit_question_email():
     try:
         # Parse the incoming JSON data
@@ -91,7 +91,7 @@ def submit_question_email():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@email_request.route('/get_forms21', methods=['GET'])
+@email_request_bp.route('/get_forms21', methods=['GET'])
 def get_forms21():
     try:
         # Fetch all documents from the collection
