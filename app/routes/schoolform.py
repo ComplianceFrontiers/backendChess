@@ -37,6 +37,8 @@ def submit_form():
         RequestFinancialAssistance = data.get('RequestFinancialAssistance',"")
         SchoolName = data.get('SchoolName',"")
         PaymentStatus = data.get('redirect_status','Not started')
+        program=data.get('program','program not selected')
+        Year=data.get('year',"2025")
 
         # Optional: Perform validation on the data here (e.g., check if email is valid)
 
@@ -59,7 +61,9 @@ def submit_form():
             "phone": phone,
             "RequestFinancialAssistance": RequestFinancialAssistance,
             "SchoolName": SchoolName,
-            "PaymentStatus":PaymentStatus
+            "PaymentStatus":PaymentStatus,
+            "year":Year,
+            "program":program
         }
 
         # Insert into MongoDB
