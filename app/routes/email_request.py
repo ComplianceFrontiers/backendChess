@@ -15,8 +15,7 @@ def generate_unique_profile_id():
     while True:
         profile_id = str(random.randint(100000, 999999))  # Generate a random 6-digit number
         # Check if the profile_id already exists in the database
-        if email_request.count_documents({"profile_id": profile_id}) == 0:
-            return profile_id
+        return profile_id
         
 @email_request.route('/r121')
 def home121():
