@@ -1,4 +1,3 @@
-import base64
 import random
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
@@ -8,63 +7,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 from app.utils.email_utils import send_email
-import os
-from werkzeug.utils import secure_filename
 
 bulkemail_bp = Blueprint('bulkemail', __name__)
-# Define the upload folder and allowed extensions
-UPLOAD_FOLDER = 'uploads/'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-# Make sure the upload folder exists
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-# Helper function to check allowed image extensions
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-@bulkemail_bp.route('/upload_image1', methods=['POST'])
-def upload_image1():
-    try:
-        # Parse the incoming JSON data
-        data = request.get_json()
-
-        # Check if base64 image data is present in the request
-        if 'image_data' not in data:
-            return jsonify({"error": "No image data provided"}), 400
-
-        image_data = data['image_data']
-        
-        # Extract the file extension from the base64 string (assuming it's in the form "data:image/png;base64,xxxx")
-        if image_data.startswith('data:image'):
-            # Find the file extension by locating the part after the 'data:image/' part and before ';base64'
-            file_extension = image_data.split(';')[0].split('/')[1]
-            if file_extension not in ALLOWED_EXTENSIONS:
-                return jsonify({"error": "Invalid file type"}), 400
-
-            # Remove the metadata part (e.g., "data:image/png;base64,") and get only the base64-encoded string
-            image_data = image_data.split(',')[1]
-        else:
-            return jsonify({"error": "Invalid base64 image data"}), 400
-
-        # Decode the base64 string into bytes
-        image_bytes = base64.b64decode(image_data)
-
-        # Generate a secure filename
-        filename = secure_filename(f"image_{len(os.listdir(UPLOAD_FOLDER)) + 1}.{file_extension}")
-        file_path = os.path.join(UPLOAD_FOLDER, filename)
-
-        # Save the image as a file
-        with open(file_path, 'wb') as file:
-            file.write(image_bytes)
-
-        # Generate the URL for the uploaded image
-        image_url = f"https://backend-chess-tau.vercel.app/{file_path}"  # Assuming your app serves static files at this URL
-
-        return jsonify({"image_url": image_url}), 201
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
 # Function to generate a random 6-digit profile_id
 def generate_unique_profile_id_1():
     while True:
