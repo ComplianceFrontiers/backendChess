@@ -209,7 +209,7 @@ def send_email_school_form_mpes():
             "Best regards ,\n\n"
             
             "Training Team\n"
-            "Delaware Chess Champs"
+            "Chess Champs Academy"
         )
 
         # Create the email
