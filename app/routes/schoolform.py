@@ -197,7 +197,7 @@ def send_email_school_form_mpes():
         DISPLAY_NAME="Chess Champs Academy"
         sender_email = "connect@chesschamps.us"
         sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
-        subject = "Thank You for Enrolling Your Child in the Mount Pleasant Elementary School Program!"
+        subject = "MPE Chess Program!"
 
         body = (
             "Dear Parents,\n\n"
