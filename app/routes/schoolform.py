@@ -158,7 +158,7 @@ def send_email_school_form_lombardy():
             "Classes will begin on Sep 26th, and we have a fantastic lineup of activities planned. Throughout the program, your child will learn valuable chess strategies, participate in friendly matches, and develop their confidence both on and off the board.\n\n"
             "Please don't hesitate to reach out to us if you have any questions or need further information.\n\n"
             "Once again, thank you for enrolling your child in our program. We look forward to an exciting journey ahead!\n\n"
-            "Best regards,\n"
+            "Best regards,\n\n"
             "Training Team\n"
             "Delaware Chess Champs"
         )
@@ -194,6 +194,7 @@ def send_email_school_form_mpes():
 
     try:
         # Email configuration
+        DISPLAY_NAME="Chess Champs Academy"
         sender_email = "connect@chesschamps.us"
         sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
         subject = "Thank You for Enrolling Your Child in the Mount Pleasant Elementary School Program!"
@@ -213,7 +214,7 @@ def send_email_school_form_mpes():
 
         # Create the email
         msg = MIMEMultipart()
-        msg['From'] = sender_email
+        msg['From'] = f'{DISPLAY_NAME} <{sender_email}>'
         msg['To'] = email
         msg['Subject'] = subject
         msg.attach(MIMEText(body, 'plain'))
@@ -256,7 +257,7 @@ def send_email_school_form_jcc():
                 "and develop their confidence both on and off the board.\n\n"
                 "Please don't hesitate to reach out to us if you have any questions or need further information.\n\n"
                 "Once again, thank you for enrolling your child in our program. We look forward to an exciting journey ahead!\n\n"
-                "Best regards,\n"
+                "Best regards,\n\n"
                 "Training Team\n"
                 "Chess Champs"
             )
