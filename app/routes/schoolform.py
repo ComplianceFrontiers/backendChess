@@ -205,7 +205,7 @@ def send_email_school_form_mpes():
             "We have a fantastic lineup of activities planned. Throughout the program, your child will learn valuable chess strategies, participate in friendly matches, and develop their confidence both on and off the board.\n\n"
             "Please don't hesitate to reach out to us if you have any questions or need further information.\n\n"
             "Once again, thank you for enrolling your child in our program. We look forward to an exciting journey ahead!\n\n"
-            "Best regards ,\n"
+            "Best regards ,\n\n"
             
             "Training Team\n"
             "Delaware Chess Champs"
