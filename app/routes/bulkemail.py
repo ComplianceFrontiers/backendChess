@@ -59,7 +59,7 @@ def upload_image1():
             file.write(image_bytes)
 
         # Generate the URL for the uploaded image
-        image_url = f"https://your-backend-url.com/{file_path}"  # Assuming your app serves static files at this URL
+        image_url = f"https://backend-chess-tau.vercel.app/{file_path}"  # Assuming your app serves static files at this URL
 
         return jsonify({"image_url": image_url}), 201
 
