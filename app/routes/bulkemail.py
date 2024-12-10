@@ -7,8 +7,43 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 from app.utils.email_utils import send_email
+import os
+from werkzeug.utils import secure_filename
 
 bulkemail_bp = Blueprint('bulkemail', __name__)
+# Define the upload folder and allowed extensions
+UPLOAD_FOLDER = 'uploads/'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Make sure the upload folder exists
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# Helper function to check allowed image extensions
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Route to upload image and store its URL
+@bulkemail_bp.route('/upload_image1', methods=['POST'])
+def upload_image1():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if file and allowed_file(file.filename):
+        # Secure the filename to avoid issues with special characters
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        file.save(file_path)
+        
+        # Generate the URL for the uploaded image
+        image_url = f"https://backend-chess-tau.vercel.app/{file_path}"  # Assuming your app serves static files at this URL
+        
+        return jsonify({"image_url": image_url}), 201
+    else:
+        return jsonify({"error": "Invalid file type"}), 400
 
 # Function to generate a random 6-digit profile_id
 def generate_unique_profile_id_1():
