@@ -202,3 +202,58 @@ def review_from_email():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@bulkemail_bp.route('/send-email-form-website-joined', methods=['POST'])
+def send_email_school_form_website_joined():
+    data = request.json
+    email = data.get('email')
+   
+
+    if not email:
+        return jsonify({"error": "Email is required"}), 400
+
+    try:
+        # Email configuration
+        DISPLAY_NAME="Chess Champs"
+        sender_email = "connect@chesschamps.us"
+        sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
+        subject = "Welcome to Chess Champs – Thank You for Joining Us!"
+
+        body = (
+                "Dear Patron,\n\n"
+                "Thank you for registering your child with Chess Champs! We’re excited to have your family join our community, where young minds develop essential skills while exploring the wonderful world of chess.\n\n"
+                "At Chess Champs, your child will have access to:\n"
+                "    • Chess Clubs: Weekly sessions to learn, practice, and connect with other budding chess players.\n"
+                "    • Tournaments: Fun and competitive events to test their skills and build confidence.\n"
+                "    • Community Events: Special programs fostering teamwork, sportsmanship, and a love for the game.\n"
+                "    • Online Courses: Flexible, engaging lessons that allow learning from the comfort of home.\n\n"
+                "Our programs are designed to be educational, interactive, and most importantly, enjoyable. We’re committed to providing an environment where your child can thrive and grow, both on and off the chessboard.\n\n"
+                "Should you have any questions or need further information, please don’t hesitate to reach out at connect@chesschamps.us\n\n"
+                "Thank you for letting us be a part of your child’s journey. Together, we’ll inspire a lifelong passion for learning and success!\n\n"
+                "Warm regards,\n\n"
+                "Siddharth Bose (Sid)\n"
+                "Founder & Lead Coach\n"
+                "www.chesschamps.us\n\n"
+                "Empowering Young Minds Through Chess"
+            )
+
+        # Create the email
+        msg = MIMEMultipart()
+        msg['From'] = f'{DISPLAY_NAME} <{sender_email}>'
+        msg['To'] = email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Connect to the SMTP server and send the email
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        text = msg.as_string()
+        server.sendmail(sender_email, email, text)
+        server.quit()
+
+        return jsonify({"message": "Email sent successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
