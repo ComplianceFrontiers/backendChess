@@ -39,6 +39,8 @@ def submit_form():
         PaymentStatus = data.get('redirect_status','Not started')
         program=data.get('program','program not selected')
         Year=data.get('year',2025)
+        mpes = data.get('mpes', False)  # Default to False if not provided
+        lombardy = data.get('lombardy', False)  # Default to False if not provided
 
         # Optional: Perform validation on the data here (e.g., check if email is valid)
 
@@ -63,7 +65,9 @@ def submit_form():
             "SchoolName": SchoolName,
             "PaymentStatus":PaymentStatus,
             "year":Year,
-            "program":program
+            "program":program,
+            "mpes": mpes, 
+            "lombardy": lombardy,
         }
 
         # Insert into MongoDB
