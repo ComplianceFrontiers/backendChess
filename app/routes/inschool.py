@@ -10,7 +10,7 @@ import uuid
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from app.database import schoolform_coll
+from app.database import schoolform_coll,bulkemail
 
 
 inschool_bp = Blueprint('inschool', __name__)
@@ -90,6 +90,31 @@ def signinschool():
             return jsonify({'success': False,'data':"new", 'message': 'Email is not registered in the In School Program group.'}), 400
     else:
         return jsonify({'success': False, 'message': 'Email is not registered.'}), 400
+
+
+@inschool_bp.route('/get_record_by_profile_id', methods=['GET'])
+def get_record_by_profile_id():
+    try:
+        # Extract profile_id from query parameters
+        profile_id = request.args.get('profile_id')
+        if not profile_id:
+            return jsonify({"error": "profile_id is required"}), 400
+
+        # Query the schoolform collection for the record
+        record = schoolform_coll.find_one({"profile_id": profile_id}, {"_id": 0})  # Exclude the "_id" field
+
+        # If not found in schoolform collection, check the bulkemail collection
+        if not record:
+            record = bulkemail.find_one({"profile_id": profile_id}, {"_id": 0})  # Exclude the "_id" field
+
+        if not record:
+            return jsonify({"error": "No record found for the given profile_id"}), 404
+
+        return jsonify(record), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 
 @inschool_bp.route('/delete_session_inschool', methods=['POST'])
