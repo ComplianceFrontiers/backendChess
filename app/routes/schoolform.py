@@ -41,6 +41,7 @@ def submit_form():
         Year=data.get('year',2025)
         mpes = data.get('mpes', False)  # Default to False if not provided
         lombardy = data.get('lombardy', False)  # Default to False if not provided
+        jcc = data.get('jcc', False) 
 
         # Optional: Perform validation on the data here (e.g., check if email is valid)
 
@@ -68,6 +69,7 @@ def submit_form():
             "program":program,
             "mpes": mpes, 
             "lombardy": lombardy,
+            "jcc":jcc
         }
 
         # Insert into MongoDB
