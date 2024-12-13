@@ -83,13 +83,14 @@ def submit_form():
 @schoolform_bp.route('/get_forms', methods=['GET'])
 def get_forms():
     try:
-        # Fetch all documents from the collection
-        records = list(schoolform_coll.find({}, {'_id': 0}))  # Exclude the MongoDB ID field
+        # Fetch all documents from the collection in descending order
+        records = list(schoolform_coll.find({}, {'_id': 0}).sort([('_id', -1)]))  # Sort by '_id' in descending order
         
         return jsonify(records), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 
 @schoolform_bp.route('/update_student_records', methods=['PUT'])
