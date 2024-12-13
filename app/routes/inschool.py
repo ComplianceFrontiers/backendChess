@@ -134,12 +134,18 @@ def delete_records_by_profile_ids():
             schoolform_result = schoolform_coll.delete_one({"profile_id": profile_id})
 
             if schoolform_result.deleted_count == 0:
-                not_found_profiles.append(profile_id)
+                # If not found in schoolform, try the bulkemail collection
+                bulkemail_result = bulkemail.delete_one({"profile_id": profile_id})
+
+                if bulkemail_result.deleted_count == 0:
+                    not_found_profiles.append(profile_id)  # Not found in either collection
+                else:
+                    deleted_profiles.append(profile_id)  # Deleted from bulkemail
             else:
-                deleted_profiles.append(profile_id)
+                deleted_profiles.append(profile_id)  # Deleted from schoolform
 
         return jsonify({
-            "status":True,
+            "status": True,
             "message": "Deletion completed",
             "deleted_profiles": deleted_profiles,
             "not_found_profiles": not_found_profiles
