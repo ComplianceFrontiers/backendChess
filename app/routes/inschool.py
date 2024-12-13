@@ -116,6 +116,37 @@ def get_record_by_profile_id():
         return jsonify({"error": str(e)}), 500
 
 
+@inschool_bp.route('/delete_records_by_profile_ids', methods=['DELETE'])
+def delete_records_by_profile_ids():
+    try:
+        # Extract the list of profile IDs from the request body
+        data = request.json
+        profile_ids = data.get('profile_ids')
+
+        if not profile_ids or not isinstance(profile_ids, list):
+            return jsonify({"error": "A list of profile_ids is required"}), 400
+
+        deleted_profiles = []
+        not_found_profiles = []
+
+        for profile_id in profile_ids:
+            # Attempt to delete the record from the schoolform collection
+            schoolform_result = schoolform_coll.delete_one({"profile_id": profile_id})
+
+            if schoolform_result.deleted_count == 0:
+                not_found_profiles.append(profile_id)
+            else:
+                deleted_profiles.append(profile_id)
+
+        return jsonify({
+            "status":True,
+            "message": "Deletion completed",
+            "deleted_profiles": deleted_profiles,
+            "not_found_profiles": not_found_profiles
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @inschool_bp.route('/delete_session_inschool', methods=['POST'])
 def delete_session_inschool():
