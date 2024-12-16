@@ -1,7 +1,7 @@
 import random
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
-from app.database import bulkemail
+from app.database import bulkemail,schoolform_coll
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -150,7 +150,41 @@ def get_forms2():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
+
+@bulkemail_bp.route('/get_master_list', methods=['GET'])
+def get_master_list():
+    try:
+        # Fetch records from both collections
+        schoolform_records = list(schoolform_coll.find({}, {'_id': 0}))
+        bulkemail_records = list(bulkemail.find({}, {'_id': 0}))
+
+        # Combine the records
+        all_records = schoolform_records + bulkemail_records
+
+        # Dictionary to hold merged data by email
+        merged_records = {}
+
+        for record in all_records:
+            email = record.get('email')
+            if email:
+                if email not in merged_records:
+                    # Add the record if email is not already in the dictionary
+                    merged_records[email] = record
+                else:
+                    # Merge fields for duplicate emails
+                    for key, value in record.items():
+                        if key not in merged_records[email] or not merged_records[email][key]:
+                            merged_records[email][key] = value
+
+        # Convert merged records back to a list
+        result = list(merged_records.values())
+
+        return jsonify(result), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @bulkemail_bp.route('/get_forms_byemail', methods=['GET'])
 def get_forms_byemail():
     try:
