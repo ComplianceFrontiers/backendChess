@@ -22,7 +22,7 @@ def home121():
     return "Hello, ramya!"
 
 
-def send_email_to_admin(subject, question):
+def send_email_to_admin(email,subject, question):
     """Send an email with the subject and question to connect@chesschamps.us."""
     sender_email = "connect@chesschamps.us"
     sender_password = "iyln tkpp vlpo sjep"  # Replace with your app-specific password
@@ -32,6 +32,7 @@ def send_email_to_admin(subject, question):
     body = (
         f"A new question has been submitted:\n\n"
         f"Subject: {subject}\n"
+        f"From Email: {email}\n"
         f"Question: {question}\n\n"
         f"Please review and respond accordingly."
     )
@@ -81,7 +82,7 @@ def submit_question_email():
 
         # Insert the document into MongoDB
         email_request.insert_one(new_entry)
-        send_email_to_admin(subject, question)
+        send_email_to_admin(email,subject, question)
 
         return jsonify({
             "message": "Question submitted successfully!",
