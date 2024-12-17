@@ -95,11 +95,12 @@ def submit_question_email():
 @email_request_bp.route('/get_forms21', methods=['GET'])
 def get_forms21():
     try:
-        # Fetch all documents from the collection
-        records = list(email_request.find({}, {'_id': 0}))  # Exclude the MongoDB ID field
+        # Fetch all documents from the collection, sorted by _id in descending order (most recent first)
+        records = list(email_request.find({}, {'_id': 0}).sort('_id', -1))  # -1 for descending order
         
         return jsonify(records), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
     
