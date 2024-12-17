@@ -30,33 +30,20 @@ def signup_bulk_email():
         data = request.get_json()
         print(data)
 
-        # Extract required fields
-        name = data.get('name')
-        email = data.get('email')
-        phone = data.get('phone')
-
-        # Validate required fields
-        if not all([name, email, phone]):
-            return jsonify({"error": "Name, email, and phone are required"}), 400
-
-        # Check if the email already exists in the database
-        existing_record = bulkemail.find_one({"email": email})
+        existing_record = bulkemail.find_one({"email": data.email})
 
         if existing_record:
             # If the email exists, update the existing record
             updated_data = {
-                "name": name,
-                "email": email,
-                "phone": phone,
             }
 
             # Update optional fields dynamically
             for key, value in data.items():
-                if key not in ['name', 'email', 'phone']:  # Skip required fields
+                if key not in ['email']:  # Skip required fields
                     updated_data[key] = value
 
             # Update the record in the database
-            bulkemail.update_one({"email": email}, {"$set": updated_data})
+            bulkemail.update_one({"email": data.email}, {"$set": updated_data})
 
             return jsonify({"message": "Record updated successfully!"}), 200
         else:
@@ -66,9 +53,9 @@ def signup_bulk_email():
             # Prepare the document with required fields
             form_data = {
                 "profile_id": profile_id,
-                "name": name,
-                "email": email,
-                "phone": phone,
+                "name": data.name,
+                "email": data.email,
+                "phone": data.phone,
             }
 
             # Add optional fields dynamically
