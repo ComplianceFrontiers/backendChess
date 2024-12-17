@@ -30,9 +30,10 @@ def signup_bulk_email():
         data = request.get_json()
         print(data)
 
-        existing_record = bulkemail.find_one({"email": data.email})
+        existing_record = bulkemail.find_one({"email": data["email"]})
+        existing_in_schoolcol = schoolform_coll.find_one({"email": data["email"]})
 
-        if existing_record:
+        if existing_record or existing_in_schoolcol:
             # If the email exists, update the existing record
             updated_data = {
             }
@@ -43,7 +44,7 @@ def signup_bulk_email():
                     updated_data[key] = value
 
             # Update the record in the database
-            bulkemail.update_one({"email": data.email}, {"$set": updated_data})
+            bulkemail.update_one({"email": data.get('email')}, {"$set": updated_data})
 
             return jsonify({"message": "Record updated successfully!"}), 200
         else:
@@ -53,9 +54,9 @@ def signup_bulk_email():
             # Prepare the document with required fields
             form_data = {
                 "profile_id": profile_id,
-                "name": data.name,
-                "email": data.email,
-                "phone": data.phone,
+                "name": data.get('name'),
+                "email": data.get('email'),
+                "phone": data.get('phone'),
             }
 
             # Add optional fields dynamically
