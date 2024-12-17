@@ -258,17 +258,17 @@ def send_email_school_form_website_joined():
         <html>
         <body>
             <p>Dear Patron,</p>
-            <p>Thank you for registering your child with Chess Champs! We’re excited to have your family join our community, where young minds develop essential skills while exploring the wonderful world of chess.</p>
-            <p>At Chess Champs, your child will have access to:</p>
+            <p>Thank you for registering yourself/your child with Chess Champs! We’re excited to have you join our community, where young minds develop essential skills while exploring the wonderful world of chess.</p>
+            <p>At Chess Champs, you will have access to:</p>
             <ul>
                 <li><b>Chess Clubs</b>: Weekly sessions to learn, practice, and connect with other budding chess players.</li>
                 <li><b>Tournaments</b>: Fun and competitive events to test their skills and build confidence.</li>
                 <li><b>Community Events</b>: Special programs fostering teamwork, sportsmanship, and a love for the game.</li>
                 <li><b>Online Courses</b>: Flexible, engaging lessons that allow learning from the comfort of home.</li>
             </ul>
-            <p>Our programs are designed to be educational, interactive, and most importantly, enjoyable. We’re committed to providing an environment where your child can thrive and grow, both on and off the chessboard.</p>
+            <p>Our programs are designed to be educational, interactive, and most importantly, enjoyable. We’re committed to providing an environment to thrive and grow, both on and off the chessboard.</p>
             <p>Should you have any questions or need further information, please don’t hesitate to reach out at <a href="mailto:connect@chesschamps.us">connect@chesschamps.us</a>.</p>
-            <p>Thank you for letting us be a part of your child’s journey. Together, we’ll inspire a lifelong passion for learning and success!</p>
+            <p>Thank you for letting us be a part of your chess journey. Together, we’ll inspire a lifelong passion for learning and success!</p>
             <p>Warm regards,</p>
             <p>
                 Siddharth Bose (Sid)<br>
