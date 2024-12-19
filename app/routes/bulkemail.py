@@ -268,7 +268,7 @@ def send_email_school_form_website_joined():
                 You are receiving this email because you signed up to receive updates and communications from 
                 <a href="https://chesschamps.us" style="color: #f53db8; text-decoration: none;">Chess Champs</a>. 
                 If you wish to stop receiving these emails, you can 
-                <a href="https://chesschamps.us/unsubscribe" style="color: #f53db8; text-decoration: none;">unsubscribe here</a>.
+                <a href="https://chesschampsus.vercel.app/unsubscribe" style="color: #f53db8; text-decoration: none;">unsubscribe here</a>.
             </p>
         </body>
         </html>
