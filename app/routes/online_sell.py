@@ -147,33 +147,6 @@ def send_email(email, online_portal_link):
         return False
 
 # API endpoint to trigger the email
-@app.route('/send_email', methods=['POST'])
-def send_email_api():
-    try:
-        # Parse the incoming JSON data
-        data = request.json
-        email = data.get('email', '')
-        
-        if not email:
-            return jsonify({"error": "Email is required"}), 400
-
-        online_portal_link = "https://chess-in-school.vercel.app/"
-        
-        # Call the send_email function
-        email_sent = send_email(email, online_portal_link)
-        
-        if email_sent:
-            return jsonify({"success": "Email sent successfully"}), 200
-        else:
-            return jsonify({"error": "Failed to send email"}), 500
-    
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
-# API endpoint to trigger the email
 @online_Sell_bp.route('/send_email_api_to_online_purchase_user', methods=['POST'])
 def send_email_api_to_online_purchase_user():
     try:
