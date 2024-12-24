@@ -78,9 +78,9 @@ def online_purchase_user():
                     "last": data.get('child_last_name', "")
                 },
                 "email": email,
-                "onlinePurchase": "true",
+                "onlinePurchase": False,
                 "online": True,
-                "PaymentStatus": data.get('redirect_status', 'Not started')
+                "PaymentStatus": data.get('payment_status', 'Not started')
             }
 
             # Insert the new document into MongoDB

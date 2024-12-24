@@ -69,7 +69,7 @@ def signinschool():
             schoolform_coll.update_one({'email': email}, {'$set': {'group': 'New App User','level':'Level 1','payment_status':'YES'}})
             user['group'] = 'new'  # Update the local variable for further logic
 
-        if user["group"] in ["In School Program", "New App User"]:
+        if (user["group"] in ["In School Program", "New App User"] and not user["onlinePurchase"] ) :
             # Check if 'session_id' exists
             if 'session_id' in user:
                 return jsonify({'success': True, 'device': True, 'device_name': user['device_name']}), 200
