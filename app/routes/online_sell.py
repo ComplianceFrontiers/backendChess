@@ -20,7 +20,7 @@ def generate_unique_profile_id_1():
         
 @online_Sell_bp.route('/rppp')
 def home1():
-    return "Hello, ramya!"
+    return "Hello, ramya evvu!"
 # Function to generate a random 6-digit profile_id
 def generate_unique_profile_id():
     while True:
@@ -66,6 +66,7 @@ def online_purchase_user():
                 "email": email,
                 "phone": data.get('phone', ""),
                 "SchoolName": data.get('SchoolName', ""),
+                "onlinePurchase":"true",
                 "PaymentStatus": data.get('redirect_status', 'Not started')
             }
 
