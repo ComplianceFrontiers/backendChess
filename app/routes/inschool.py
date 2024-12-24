@@ -4,6 +4,9 @@ from flask import Blueprint, request, jsonify
 from pymongo import ReturnDocument
 import random
 import smtplib
+from requests.auth import HTTPBasicAuth
+
+import requests
 from app.database import db, fs
 import os
 import uuid
@@ -63,37 +66,64 @@ def signinschool():
     # Retrieve the user from the database
     user = schoolform_coll.find_one({'email': email})
 
-    if user:
-        # Check if 'group' exists and set to "New App User" if not
-        if 'group' not in user or not user['group']:
-            schoolform_coll.update_one({'email': email}, {'$set': {'group': 'New App User','level':'Level 1','payment_status':'YES'}})
-            user['group'] = 'new'  # Update the local variable for further logic
-
-        if (user["group"] in ["In School Program", "New App User"] and  user.get("onlinePurchase", True) ) :
-            # Check if 'session_id' exists
-            if 'session_id' in user:
-                return jsonify({'success': True, 'device': True, 'device_name': user['device_name']}), 200
-            else:
-                # Generate a new UUID for session_id
-                session_id = str(uuid.uuid4())
-                schoolform_coll.update_one({'email': email}, {'$set': {'session_id': session_id, 'device_name': device_name}})
-                
-                # Continue with the OTP process
-                if 'otp' not in user or user['otp'] is None:
-                    otp = random.randint(100000, 999999)
-                    schoolform_coll.update_one({'email': email}, {'$set': {'otp': otp}})
-                    send_otp(email, otp)
-                    return jsonify({'success': True, 'message': 'OTP sent to email.', 'otp_required': True}), 200
-                else:
-                    return jsonify({'success': True, 'message': 'OTP already sent.', 'otp_required': True}), 200
-        elif(user["onlinePurchase"]==False):
-                return jsonify({'success': True, 'message': 'checking with stripe', 'otp_required': True}), 200
-
-        else:
-            return jsonify({'success': False,'data':"new", 'message': 'Email is not registered in the In School Program group.'}), 400
-    else:
+    if not user:
         return jsonify({'success': False, 'message': 'Email is not registered.'}), 400
 
+    # Handle group assignment if not already set
+    if 'group' not in user or not user['group']:
+        schoolform_coll.update_one({'email': email}, {'$set': {'group': 'New App User', 'level': 'Level 1', 'payment_status': False}})
+        user['group'] = 'New App User'  # Update the local variable for further logic
+    
+    if user["group"] in ["In School Program", "New App User"] and user.get("onlinePurchase", True):
+        return handle_device_and_otp(user, device_name, email)
+    elif not user.get("onlinePurchase", False):
+        return check_stripe_payment(user, email, device_name)
+    else:
+        return jsonify({'success': False, 'data': "new", 'message': 'Email is not registered in the In School Program group.'}), 400
+
+
+def handle_device_and_otp(user, device_name, email):
+    # Check if session_id exists
+    if 'session_id' in user:
+        return jsonify({'success': True, 'device': True, 'device_name': user['device_name']}), 200
+    
+    # Generate a new session_id
+    session_id = str(uuid.uuid4())
+    schoolform_coll.update_one({'email': email}, {'$set': {'session_id': session_id, 'device_name': device_name}})
+    
+    # Continue with OTP process
+    if 'otp' not in user or user['otp'] is None:
+        otp = random.randint(100000, 999999)
+        schoolform_coll.update_one({'email': email}, {'$set': {'otp': otp}})
+        send_otp(email, otp)
+        return jsonify({'success': True, 'message': 'OTP sent to email.', 'otp_required': True}), 200
+    else:
+        return jsonify({'success': True, 'message': 'OTP already sent.', 'otp_required': True}), 200
+
+
+def check_stripe_payment(user, email, device_name):
+    # Stripe API for payment status
+    stripe_url = 'https://api.stripe.com/v1/checkout/sessions?expand[]=data.customer&limit=100&payment_link=plink_1QZSvrAL8dlaQidpcjUwyTk9'
+    username = 'sk_test_51QZAkcAL8dlaQidprC4j41YPnrwBla20ydt0186n8OkC42OHIoIfOymIu2gkwPPqUIwPQzVUchmc6WeVsUhGO8x100suZdMZtg'
+    password = 'Ramya@2002'
+    
+    response = requests.get(stripe_url, auth=HTTPBasicAuth(username, password))
+    
+    if response.status_code != 200:
+        return jsonify({'success': False, 'message': 'Failed to fetch Stripe session data.'}), 500
+
+    response_data = response.json()
+    paid_emails = [session['customer_details']['email'] for session in response_data.get('data', []) if session.get('payment_status') == 'paid']
+    if email not in paid_emails:
+        return jsonify({'success': False, 'message': 'Email not registered in the paid users list.'}), 400
+    # Update user payment status and process device and OTP
+    for paid_email in paid_emails:
+        user = schoolform_coll.find_one({"email": paid_email})
+        if user:
+            schoolform_coll.update_one({"email": paid_email}, {"$set": {"payment_status": True,"onlinePurchase":True,'group': 'In School Program','strip':"true"}})
+            return handle_device_and_otp(user, device_name, paid_email)
+
+    return jsonify({'success': True, 'message': 'OTP sent to email.', 'otp_required': True,'emails':paid_emails}), 200
 
 @inschool_bp.route('/get_record_by_profile_id', methods=['GET'])
 def get_record_by_profile_id():
