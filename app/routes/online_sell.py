@@ -91,15 +91,6 @@ def online_purchase_user():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
     
-
-# Function to send email
-from flask import Flask, request, jsonify
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-
-app = Flask(__name__)
-
 # Function to send email
 def send_email(email, online_portal_link):
     DISPLAY_NAME = "Chess Champs Academy"
