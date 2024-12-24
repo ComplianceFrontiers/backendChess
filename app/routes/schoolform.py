@@ -353,8 +353,6 @@ def send_email(email, online_portal_link):
             f"• Access Email: {email}\n\n"
             f"Please use these credentials to log in to the portal and explore the resources available. An OTP will be generated upon your first login. "
             f"You will remain logged in unless you click 'Logout' or access the portal from a different device. For security purposes, we kindly recommend not sharing the link with others.\n\n"
-            f"Our training videos are optimized for desktop viewing, though a mobile version is available. Please note the mobile experience may be slightly glitchy, and we are actively working to improve it. "
-            f"Thank you for your patience and continued support.\n\n"
             f"If you have any questions or need further assistance, feel free to contact our support team.\n\n"
             f"Warm Regards ,\n\n"
             f"Training Team\n"
