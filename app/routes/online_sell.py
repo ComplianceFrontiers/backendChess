@@ -7,7 +7,6 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 from app.utils.email_utils import send_email
-from datetime import datetime
 
 online_Sell_bp = Blueprint('online_Sell', __name__)
 
@@ -43,9 +42,6 @@ def online_purchase_user():
         if not email:
             return jsonify({"error": "Email is required"}), 400
 
-        # Get the current date and time
-        current_time = datetime.now()
-
         # Check if the email exists in the database
         existing_user = schoolform_coll.find_one({"email": email})
         
@@ -60,8 +56,7 @@ def online_purchase_user():
                     "first": data.get('child_first_name', ""),
                     "last": data.get('child_last_name', "")
                 },
-                "phone": data.get('phone', ""),
-                "updated_at": current_time  # Add update timestamp
+                "phone":data.get('phone', "")
             }
 
             # Update the user document in MongoDB
@@ -86,9 +81,7 @@ def online_purchase_user():
                 "email": email,
                 "onlinePurchase": False,
                 "online": True,
-                "PaymentStatus": data.get('payment_status', 'Not started'),
-                "created_at": current_time,  # Add creation timestamp
-                "updated_at": current_time  # Initialize updated_at to the same as created_at
+                "PaymentStatus": data.get('payment_status', 'Not started')
             }
 
             # Insert the new document into MongoDB
@@ -96,6 +89,9 @@ def online_purchase_user():
 
             return jsonify({"success": "new", "profile_id": profile_id}), 201
 
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+    
 # Function to send email
 def send_email(email, online_portal_link):
     DISPLAY_NAME = "Chess Champs Academy"
