@@ -67,6 +67,7 @@ def online_purchase_user():
                 "phone": data.get('phone', ""),
                 "SchoolName": data.get('SchoolName', ""),
                 "onlinePurchase":"true",
+                "online":True,
                 "PaymentStatus": data.get('redirect_status', 'Not started')
             }
 
