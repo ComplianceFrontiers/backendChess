@@ -56,6 +56,7 @@ def online_purchase_user():
                     "first": data.get('child_first_name', ""),
                     "last": data.get('child_last_name', "")
                 },
+                "phone":data.get('phone', "")
             }
 
             # Update the user document in MongoDB
