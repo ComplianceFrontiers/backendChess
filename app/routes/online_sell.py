@@ -46,8 +46,22 @@ def online_purchase_user():
         existing_user = schoolform_coll.find_one({"email": email})
         
         if existing_user:
-            # Email exists, return success with "old"
-            return jsonify({"success": "old"}), 201
+            # Email exists, update fields with new data
+            update_data = {
+                "parent_name": {
+                    "first": data.get('parent_first_name', ""),
+                    "last": data.get('parent_last_name', "")
+                },
+                "child_name": {
+                    "first": data.get('child_first_name', ""),
+                    "last": data.get('child_last_name', "")
+                },
+            }
+
+            # Update the user document in MongoDB
+            schoolform_coll.update_one({"email": email}, {"$set": update_data})
+
+            return jsonify({"success": "updated"}), 200
         else:
             # Generate a unique profile_id
             profile_id = generate_unique_profile_id()
@@ -64,10 +78,8 @@ def online_purchase_user():
                     "last": data.get('child_last_name', "")
                 },
                 "email": email,
-                "phone": data.get('phone', ""),
-                "SchoolName": data.get('SchoolName', ""),
-                "onlinePurchase":"true",
-                "online":True,
+                "onlinePurchase": "true",
+                "online": True,
                 "PaymentStatus": data.get('redirect_status', 'Not started')
             }
 
