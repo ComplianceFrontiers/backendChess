@@ -90,3 +90,110 @@ def online_purchase_user():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+    
+
+# Function to send email
+from flask import Flask, request, jsonify
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+app = Flask(__name__)
+
+# Function to send email
+def send_email(email, online_portal_link):
+    DISPLAY_NAME = "Chess Champs Academy"
+    sender_email = "connect@chesschamps.us"
+    sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
+    subject = "Your Access Credentials for Chess Champs Academy Portal"
+
+    # Updated body with HTML for red text
+    body = f"""
+    <html>
+    <body>
+        <p>Dear Patron,</p>
+        <p>We are pleased to provide you with the access credentials for the Chess Champs Academy portal. Below are your login details:</p>
+        <ul>
+            <li><strong>Access Link:</strong> <a href="{online_portal_link}">{online_portal_link}</a></li>
+            <li><strong>Access Email:</strong> {email}</li>
+        </ul>
+        <p>Please use these credentials to log in to the portal and explore the resources available. An OTP will be generated upon your first login. 
+        You will remain logged in unless you click 'Logout' or access the portal from a different device. For security purposes, we kindly recommend not sharing the link with others.</p>
+        <p>Our training videos are optimized for desktop viewing, though a mobile version is available. Please note the mobile experience may be slightly glitchy, and we are actively working to improve it. 
+        Thank you for your patience and continued support.</p>
+        <p>If you have any questions or need further assistance, feel free to contact our support team.</p>
+        <p><strong>Note:</strong> <span style="color: red;">This link will be accessible only when the payment is successful.</span></p>
+        <p>Warm Regards,<br>Training Team<br>Chess Champs Academy</p>
+    </body>
+    </html>
+    """
+
+    msg = MIMEMultipart()
+    msg['From'] = f'{DISPLAY_NAME} <{sender_email}>'
+    msg['To'] = email
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'html'))  # Set content type to 'html'
+
+    try:
+        # SMTP server setup
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()  # Secure the connection
+        server.login(sender_email, sender_password)  # Login to the email account
+        server.sendmail(sender_email, email, msg.as_string())  # Send the email
+        server.quit()  # Logout of the server
+        return True
+    except Exception as e:
+        print(f"Failed to send email: {str(e)}")
+        return False
+
+# API endpoint to trigger the email
+@app.route('/send_email', methods=['POST'])
+def send_email_api():
+    try:
+        # Parse the incoming JSON data
+        data = request.json
+        email = data.get('email', '')
+        
+        if not email:
+            return jsonify({"error": "Email is required"}), 400
+
+        online_portal_link = "https://chess-in-school.vercel.app/"
+        
+        # Call the send_email function
+        email_sent = send_email(email, online_portal_link)
+        
+        if email_sent:
+            return jsonify({"success": "Email sent successfully"}), 200
+        else:
+            return jsonify({"error": "Failed to send email"}), 500
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+# API endpoint to trigger the email
+@online_Sell_bp.route('/send_email_api_to_online_purchase_user', methods=['POST'])
+def send_email_api_to_online_purchase_user():
+    try:
+        # Parse the incoming JSON data
+        data = request.json
+        email = data.get('email', '')
+        
+        if not email:
+            return jsonify({"error": "Email is required"}), 400
+
+        online_portal_link = "https://chess-in-school.vercel.app/"
+        
+        # Call the send_email function
+        email_sent = send_email(email, online_portal_link)
+        
+        if email_sent:
+            return jsonify({"success": "Email sent successfully"}), 200
+        else:
+            return jsonify({"error": "Failed to send email"}), 500
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
