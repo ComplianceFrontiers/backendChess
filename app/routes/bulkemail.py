@@ -258,6 +258,7 @@ def send_email_school_form_website_joined():
             <p>Should you have any questions or need further information, please don’t hesitate to reach out at <a href="mailto:connect@chesschamps.us">connect@chesschamps.us</a>.</p>
             <p>Thank you for letting us be a part of your chess journey. Together, we’ll inspire a lifelong passion for learning and success!</p>
             <p>Warm regards,</p>
+            <br
             <p>
                 Siddharth Bose (Sid)<br>
                 Founder & Lead Coach<br>

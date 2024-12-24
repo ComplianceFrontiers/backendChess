@@ -114,7 +114,7 @@ def send_email(email, online_portal_link):
         Thank you for your patience and continued support.</p>
         <p>If you have any questions or need further assistance, feel free to contact our support team.</p>
         <p><strong>Note:</strong> <span style="color: red;">This link will be accessible only when the payment is successful.</span></p>
-        <p>Warm Regards,<br>Training Team<br>Chess Champs Academy</p>
+        <p>Warm Regards,<br><br>Training Team<br>Chess Champs Academy</p>
     </body>
     </html>
     """
