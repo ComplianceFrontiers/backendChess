@@ -63,6 +63,7 @@ def online_purchase_user():
                  "uscf_expiration_date":data.get('uscf_expiration_date',""),
                  "byes":data.get('byes',""),
                  "Bear_Middletown_Chess_Tournament":data.get('Bear_Middletown_Chess_Tournament',""),
+                  "New_Jersey_Masterclass":data.get('New_Jersey_Masterclass',""),
             }
 
             # Update the user document in MongoDB
@@ -94,6 +95,7 @@ def online_purchase_user():
                  "uscf_expiration_date":data.get('uscf_expiration_date',""),
                  "byes":data.get('byes',""),
                  "Bear_Middletown_Chess_Tournament":data.get('Bear_Middletown_Chess_Tournament',""),
+                 "New_Jersey_Masterclass":data.get('New_Jersey_Masterclass',""),
             }
 
             # Insert the new document into MongoDB
