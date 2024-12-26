@@ -43,6 +43,7 @@ def submit_form():
         lombardy = data.get('lombardy', False)  # Default to False if not provided
         jcc = data.get('jcc', False) 
         USCF_Rating = data.get('USCF_Rating', "")
+        WilmingtonChessCoaching = data.get('WilmingtonChessCoaching', "")
 
         # Optional: Perform validation on the data here (e.g., check if email is valid)
 
@@ -72,7 +73,8 @@ def submit_form():
             "lombardy": lombardy,
             "jcc":jcc,
             "USCF_Rating":USCF_Rating,
-        }
+            "WilmingtonChessCoaching":WilmingtonChessCoaching
+                   }
 
         # Insert into MongoDB
         schoolform_coll.insert_one(form_data)
