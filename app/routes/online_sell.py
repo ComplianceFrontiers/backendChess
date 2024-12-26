@@ -56,7 +56,13 @@ def online_purchase_user():
                     "first": data.get('child_first_name', ""),
                     "last": data.get('child_last_name', "")
                 },
-                "phone":data.get('phone', "")
+                "phone":data.get('phone', ""),
+                "category":data.get('category',""),
+                "section":data.get('section', ""),
+                "uscf_id":data.get('uscf_id',""),
+                 "uscf_expiration_date":data.get('uscf_expiration_date',""),
+                 "byes":data.get('byes',""),
+                 "Bear_Middletown_Chess_Tournament":data.get('Bear_Middletown_Chess_Tournament',""),
             }
 
             # Update the user document in MongoDB
@@ -81,7 +87,13 @@ def online_purchase_user():
                 "email": email,
                 "onlinePurchase": False,
                 "online": True,
-                "PaymentStatus": data.get('payment_status', 'Not started')
+                "PaymentStatus": data.get('payment_status', 'Not started'),
+                 "category":data.get('category',""),
+                "section":data.get('section', ""),
+                "uscf_id":data.get('uscf_id',""),
+                 "uscf_expiration_date":data.get('uscf_expiration_date',""),
+                 "byes":data.get('byes',""),
+                 "Bear_Middletown_Chess_Tournament":data.get('Bear_Middletown_Chess_Tournament',""),
             }
 
             # Insert the new document into MongoDB
