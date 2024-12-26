@@ -36,12 +36,13 @@ def submit_form():
         phone = data.get('phone',"")
         RequestFinancialAssistance = data.get('RequestFinancialAssistance',"")
         SchoolName = data.get('SchoolName',"")
-        PaymentStatus = data.get('redirect_status','Not started')
-        program=data.get('program','program not selected')
+        PaymentStatus = data.get('redirect_status','')
+        program=data.get('program','')
         Year=data.get('year',2025)
         mpes = data.get('mpes', False)  # Default to False if not provided
         lombardy = data.get('lombardy', False)  # Default to False if not provided
         jcc = data.get('jcc', False) 
+        USCF_Rating = data.get('USCF_Rating', "")
 
         # Optional: Perform validation on the data here (e.g., check if email is valid)
 
@@ -69,7 +70,8 @@ def submit_form():
             "program":program,
             "mpes": mpes, 
             "lombardy": lombardy,
-            "jcc":jcc
+            "jcc":jcc,
+            "USCF_Rating":USCF_Rating,
         }
 
         # Insert into MongoDB
