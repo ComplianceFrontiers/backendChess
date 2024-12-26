@@ -64,6 +64,9 @@ def online_purchase_user():
                  "byes":data.get('byes',""),
                  "Bear_Middletown_Chess_Tournament":data.get('Bear_Middletown_Chess_Tournament',""),
                   "New_Jersey_Masterclass":data.get('New_Jersey_Masterclass',""),
+                                    "New_Jersey_Chess_Tournament":data.get('New_Jersey_Chess_Tournament',""),
+
+                  
             }
 
             # Update the user document in MongoDB
@@ -96,6 +99,8 @@ def online_purchase_user():
                  "byes":data.get('byes',""),
                  "Bear_Middletown_Chess_Tournament":data.get('Bear_Middletown_Chess_Tournament',""),
                  "New_Jersey_Masterclass":data.get('New_Jersey_Masterclass',""),
+                 "New_Jersey_Chess_Tournament":data.get('New_Jersey_Chess_Tournament',""),
+
             }
 
             # Insert the new document into MongoDB
