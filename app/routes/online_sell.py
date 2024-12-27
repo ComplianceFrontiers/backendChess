@@ -92,6 +92,7 @@ def online_purchase_user():
                 "email": email,
                 "onlinePurchase": False,
                 "online": True,
+                "phone":data.get('phone',""),
                 "PaymentStatus": data.get('payment_status', 'Not started'),
                  "category":data.get('category',""),
                 "section":data.get('section', ""),
