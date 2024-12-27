@@ -62,6 +62,8 @@ def online_purchase_user():
                 "uscf_id":data.get('uscf_id',""),
                  "uscf_expiration_date":data.get('uscf_expiration_date',""),
                  "byes":data.get('byes',""),
+                "WilmingtonChessCoaching":data.get('WilmingtonChessCoaching',""),
+
                  "Bear_Middletown_Chess_Tournament":data.get('Bear_Middletown_Chess_Tournament',""),
                   "New_Jersey_Masterclass":data.get('New_Jersey_Masterclass',""),
                                     "New_Jersey_Chess_Tournament":data.get('New_Jersey_Chess_Tournament',""),
@@ -99,6 +101,8 @@ def online_purchase_user():
                 "uscf_id":data.get('uscf_id',""),
                  "uscf_expiration_date":data.get('uscf_expiration_date',""),
                  "byes":data.get('byes',""),
+                 "WilmingtonChessCoaching":data.get('WilmingtonChessCoaching',""),
+
                  "Bear_Middletown_Chess_Tournament":data.get('Bear_Middletown_Chess_Tournament',""),
                  "New_Jersey_Masterclass":data.get('New_Jersey_Masterclass',""),
                  "New_Jersey_Chess_Tournament":data.get('New_Jersey_Chess_Tournament',""),
