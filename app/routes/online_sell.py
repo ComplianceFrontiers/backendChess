@@ -65,6 +65,7 @@ def online_purchase_user():
                  "Bear_Middletown_Chess_Tournament":data.get('Bear_Middletown_Chess_Tournament',""),
                   "New_Jersey_Masterclass":data.get('New_Jersey_Masterclass',""),
                                     "New_Jersey_Chess_Tournament":data.get('New_Jersey_Chess_Tournament',""),
+                                    "chessclub":data.get('chessclub',""),
 
                   
             }
@@ -100,6 +101,8 @@ def online_purchase_user():
                  "Bear_Middletown_Chess_Tournament":data.get('Bear_Middletown_Chess_Tournament',""),
                  "New_Jersey_Masterclass":data.get('New_Jersey_Masterclass',""),
                  "New_Jersey_Chess_Tournament":data.get('New_Jersey_Chess_Tournament',""),
+                 "chessclub":data.get('chessclub',""),
+
 
             }
 
