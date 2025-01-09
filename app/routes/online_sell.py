@@ -69,6 +69,8 @@ def online_purchase_user():
                 "chessclub":data.get('chessclub',""),
                 "Bear_Chess_Coaching":data.get('Bear_Chess_Coaching',""),
                 "WhatsApp":data.get('WhatsApp',""),
+               "location":data.get('location', ""),
+
   
             }
 
@@ -98,6 +100,8 @@ def online_purchase_user():
                 "PaymentStatus": data.get('payment_status', 'Not started'),
                  "category":data.get('category',""),
                 "section":data.get('section', ""),
+                                "location":data.get('location', ""),
+
                 "uscf_id":data.get('uscf_id',""),
                  "uscf_expiration_date":data.get('uscf_expiration_date',""),
                  "byes":data.get('byes',""),
