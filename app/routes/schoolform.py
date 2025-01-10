@@ -42,6 +42,8 @@ def submit_form():
         mpes = data.get('mpes', False)  # Default to False if not provided
         lombardy = data.get('lombardy', False)  # Default to False if not provided
         jcc = data.get('jcc', False) 
+        jcc_kp = data.get('jcc_kp', False) 
+
         USCF_Rating = data.get('USCF_Rating', "")
         WilmingtonChessCoaching = data.get('WilmingtonChessCoaching', "")
 
@@ -72,6 +74,7 @@ def submit_form():
             "mpes": mpes, 
             "lombardy": lombardy,
             "jcc":jcc,
+            "jcc_kp":jcc_kp,
             "USCF_Rating":USCF_Rating,
             "WilmingtonChessCoaching":WilmingtonChessCoaching
                    }
