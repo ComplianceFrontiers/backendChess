@@ -106,3 +106,14 @@ def form_chess_club_bp_delete_records_by_profile_ids():
 
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+
+@form_chess_club_bp.route('/get_forms_form_chess_club', methods=['GET'])
+def get_forms_form_chess_club():
+    try:
+        # Fetch all documents from the collection in descending order
+        records = list(form_chess_club.find({}, {'_id': 0}).sort([('_id', -1)]))  # Sort by '_id' in descending order
+        
+        return jsonify(records), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
