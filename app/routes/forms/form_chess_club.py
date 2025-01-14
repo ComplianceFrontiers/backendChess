@@ -1,7 +1,7 @@
 import random
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
-from app.database import form_chess_club_coll
+from app.database import form_chess_club
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -22,7 +22,7 @@ def generate_unique_profile_id():
     while True:
         profile_id = str(random.randint(100000, 999999))  # Generate a random 6-digit number
         # Check if the profile_id already exists in the database
-        if form_chess_club_coll.count_documents({"profile_id": profile_id}) == 0:
+        if form_chess_club.count_documents({"profile_id": profile_id}) == 0:
             return profile_id
 
 @form_chess_club_bp.route('/form_chess_club_bp_submit', methods=['POST'])
@@ -66,7 +66,7 @@ def form_chess_club_bp_submit():
         }
 
         # Insert into MongoDB
-        form_chess_club_coll.insert_one(form_data)
+        form_chess_club.insert_one(form_data)
 
         return jsonify({"message": "Form submitted successfully!", "profile_id": profile_id}), 200
 
