@@ -32,6 +32,7 @@ def create_app():
     from app.routes.bulkemail import bulkemail_bp
     from app.routes.email_request import email_request_bp
     from app.routes.online_sell import online_Sell_bp
+    from app.routes.forms.form_chess_club import form_chess_club_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(images_bp)
@@ -49,6 +50,7 @@ def create_app():
     app.register_blueprint(bulkemail_bp)
     app.register_blueprint(email_request_bp)
     app.register_blueprint(online_Sell_bp)
+    app.register_blueprint(form_chess_club_bp)
 
 
     return app
