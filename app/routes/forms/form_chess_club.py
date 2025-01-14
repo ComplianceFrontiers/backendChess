@@ -117,3 +117,25 @@ def get_forms_form_chess_club():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@form_chess_club_bp.route('/form_chess_club_by_profile_id', methods=['GET'])
+def get_form_chess_club_by_profile_id():
+    try:
+        # Extract 'profile_id' from query parameters
+        profile_id = request.args.get('profile_id')
+
+        # Validate the input
+        if not profile_id:
+            return jsonify({"error": "Profile ID is required"}), 400
+
+        # Fetch the document from the collection
+        record = form_chess_club.find_one({"profile_id": str(profile_id)}, {'_id': 0})  # Exclude MongoDB's default '_id' field
+
+        if record:
+            return jsonify(record), 200
+        else:
+            return jsonify({"error": "Record not found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+
