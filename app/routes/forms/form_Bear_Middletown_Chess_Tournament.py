@@ -36,11 +36,16 @@ def form_Bear_Middletown_Chess_Tournament_bp_submit():
         parent_last_name = data.get('parent_last_name', "")
         child_first_name = data.get('child_first_name', "")
         child_last_name = data.get('child_last_name', "")
-        child_grade= data.get('child_grade', "")
-        program= data.get('program', "")
-        USCF_Rating= data.get('USCF_Rating', "")
+        child_grade = data.get('child_grade', "")
+        program = data.get('program', "")
+        USCF_Rating = data.get('USCF_Rating', "")
         email = data.get('email', "")
         phone = data.get('phone', "")
+        category = data.get('category', "")
+        section = data.get('section', "")
+        uscf_id = data.get('uscf_id', "")
+        uscf_expiration_date = data.get('uscf_expiration_date', "")
+        byes = data.get('byes', "")
         Year = data.get('year', 2025)
         profile_id = generate_unique_profile_id()
 
@@ -62,10 +67,15 @@ def form_Bear_Middletown_Chess_Tournament_bp_submit():
             },
             "email": email,
             "phone": phone,
+            "category": category,
+            "section": section,
+            "uscf_id": uscf_id,
+            "uscf_expiration_date": uscf_expiration_date,
+            "byes": byes,
             "year": Year,
-            "child_grade":child_grade,
-            "program":program,
-            "USCF_Rating":USCF_Rating,
+            "child_grade": child_grade,
+            "program": program,
+            "USCF_Rating": USCF_Rating,
             "Bear_Middletown_Chess_Tournament": True,
             "date": current_date,  # Add the current date (MM-DD-YYYY)
             "time": current_time,  # Add the current time (HH:MM:SS)
