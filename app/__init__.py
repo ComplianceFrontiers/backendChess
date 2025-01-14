@@ -36,6 +36,7 @@ def create_app():
     from app.routes.forms.form_Wilmington_Chess_Coaching import form_Wilmington_Chess_Coaching_bp
     from app.routes.forms.form_Bear_Middletown_Chess_Tournament import form_Bear_Middletown_Chess_Tournament_bp
     from app.routes.forms.form_Bear_Middletown_Chess_Coaching import form_Bear_Middletown_Chess_Coaching_bp
+    from app.routes.forms.form_New_Jersey_Chess_Tournament import form_New_Jersey_Chess_Tournament_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(images_bp)
@@ -57,4 +58,5 @@ def create_app():
     app.register_blueprint(form_Wilmington_Chess_Coaching_bp)
     app.register_blueprint(form_Bear_Middletown_Chess_Tournament_bp)
     app.register_blueprint(form_Bear_Middletown_Chess_Coaching_bp)
+    app.register_blueprint(form_New_Jersey_Chess_Tournament_bp)
     return app
