@@ -72,3 +72,37 @@ def form_chess_club_bp_submit():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+
+
+@form_chess_club_bp.route('/form_chess_club_bp_delete_records_by_profile_ids', methods=['DELETE'])
+def form_chess_club_bp_delete_records_by_profile_ids():
+    try:
+        # Extract the list of profile IDs from the request body
+        data = request.json
+        profile_ids = data.get('profile_ids')
+
+        # Validate input
+        if not profile_ids or not isinstance(profile_ids, list):
+            return jsonify({"error": "A valid list of profile_ids is required"}), 400
+
+        deleted_profiles = []
+        not_found_profiles = []
+
+        for profile_id in profile_ids:
+            # Attempt to delete the record from the collection
+            result = form_chess_club.delete_one({"profile_id": str(profile_id)})
+
+            if result.deleted_count > 0:
+                deleted_profiles.append(profile_id)  # Successfully deleted
+            else:
+                not_found_profiles.append(profile_id)  # Not found
+
+        return jsonify({
+            "status": True,
+            "message": "Deletion process completed",
+            "deleted_profiles": deleted_profiles,
+            "not_found_profiles": not_found_profiles
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
