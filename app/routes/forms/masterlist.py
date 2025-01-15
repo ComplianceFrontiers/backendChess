@@ -161,7 +161,15 @@ def get_master_list():
         # Convert merged records to a list
         result = list(merged_records.values())
 
-        return jsonify(result), 200
+        # Sort the result by the 'date' field in descending order
+        # Assumes the 'date' field is in the format 'MM-DD-YYYY'
+        sorted_result = sorted(
+            result,
+            key=lambda x: datetime.strptime(x.get('date', '01-01-1970'), '%m-%d-%Y'),
+            reverse=True
+        )
+
+        return jsonify(sorted_result), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
