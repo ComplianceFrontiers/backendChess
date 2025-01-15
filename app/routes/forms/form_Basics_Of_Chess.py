@@ -48,6 +48,7 @@ def form_Basics_Of_Chess_bp_submit():
         jcc = data.get('jcc', False) 
         jcc_kp = data.get('jcc_kp', False) 
         New_Jersey_Masterclass = data.get('New_Jersey_Masterclass', False) 
+        onlinePurchase=data.get('onlinePurchase',False)
         profile_id = generate_unique_profile_id()
 
         # Get current date and time
@@ -78,6 +79,7 @@ def form_Basics_Of_Chess_bp_submit():
             "jcc":jcc,
             "jcc_kp":jcc_kp,
             "New_Jersey_Masterclass":New_Jersey_Masterclass,
+            "onlinePurchase":onlinePurchase,
             "date": current_date,  # Add the current date (MM-DD-YYYY)
             "time": current_time,  # Add the current time (HH:MM:SS)
         }
