@@ -106,17 +106,32 @@ def masterlist_bp_delete_records_by_profile_ids():
         if not profile_ids or not isinstance(profile_ids, list):
             return jsonify({"error": "A valid list of profile_ids is required"}), 400
 
+        # List of all collections to check and delete records
+        collections = [
+            form_chess_club,
+            form_Wilmington_Chess_Coaching,
+            form_Bear_Middletown_Chess_Tournament,
+            form_Bear_Middletown_Chess_Coaching,
+            form_New_Jersey_Chess_Tournament,
+            form_Basics_Of_Chess,
+            masterlist
+        ]
+
         deleted_profiles = []
         not_found_profiles = []
 
+        # Iterate over all profile IDs
         for profile_id in profile_ids:
-            # Attempt to delete the record from the collection
-            result = masterlist.delete_one({"profile_id": str(profile_id)})
-
-            if result.deleted_count > 0:
-                deleted_profiles.append(profile_id)  # Successfully deleted
+            found = False
+            # Check all collections for the given profile_id
+            for collection in collections:
+                result = collection.delete_one({"profile_id": str(profile_id)})
+                if result.deleted_count > 0:
+                    found = True  # Mark as found and deleted
+            if found:
+                deleted_profiles.append(profile_id)  # Profile ID successfully deleted
             else:
-                not_found_profiles.append(profile_id)  # Not found
+                not_found_profiles.append(profile_id)  # Profile ID not found in any collection
 
         return jsonify({
             "status": True,
@@ -185,69 +200,28 @@ def get_masterlist_by_profile_id():
         if not profile_id:
             return jsonify({"error": "Profile ID is required"}), 400
 
-        # Fetch the document from the collection
-        record = masterlist.find_one({"profile_id": str(profile_id)}, {'_id': 0})  # Exclude MongoDB's default '_id' field
+        # List of all collections to search
+        collections = [
+            form_chess_club,
+            form_Wilmington_Chess_Coaching,
+            form_Bear_Middletown_Chess_Tournament,
+            form_Bear_Middletown_Chess_Coaching,
+            form_New_Jersey_Chess_Tournament,
+            form_Basics_Of_Chess,
+            masterlist
+        ]
 
-        if record:
-            return jsonify(record), 200
-        else:
-            return jsonify({"error": "Record not found"}), 404
+        # Search for the profile ID in all collections
+        for collection in collections:
+            record = collection.find_one({"profile_id": str(profile_id)}, {'_id': 0})  # Exclude MongoDB's default '_id' field
+            if record:
+                return jsonify(record), 200  # Return the first match found
+
+        # If not found in any collection
+        return jsonify({"error": "Record not found"}), 404
 
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
-
-@masterlist_bp.route('/masterlist_update_forms', methods=['POST'])
-def update_forms():
-    try:
-        # Parse the incoming JSON data
-        data = request.json
-
-        # Extract the list of updates, each with an email and its associated fields
-        updates = data.get('updates', [])  # Expecting a list of update objects
-
-        # Ensure that updates are provided and it's a non-empty list
-        if not updates or not isinstance(updates, list):
-            return jsonify({"error": "A list of updates is required!"}), 400
-
-        # Process each update
-        update_results = []
-        for update in updates:
-            email = update.get('email')
-            payment_status = update.get('payment_status')
-            group = update.get('group')
-            level = update.get('level')
-
-            # Ensure email is provided
-            if not email:
-                update_results.append({"email": None, "status": "Email is required"})
-                continue
-
-            # Prepare the update data
-            update_data = {
-                "payment_status": payment_status,
-                "group": group,
-                "level": level
-            }
-
-            # Update all documents with the specified email
-            result = masterlist.update_many(
-                {"email": email},
-                {"$set": update_data}
-            )
-
-            if result.matched_count > 0:
-                update_results.append({
-                    "email": email,
-                    "status": f"Updated {result.modified_count} record(s) successfully"
-                })
-            else:
-                update_results.append({"email": email, "status": "No matching email found"})
-
-        return jsonify({"results": update_results}), 200
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
-
 
 def send_email(email, online_portal_link):
     DISPLAY_NAME="Chess Champs Academy"
