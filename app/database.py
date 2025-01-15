@@ -17,9 +17,10 @@ form_Wilmington_Chess_Coaching=None
 form_Bear_Middletown_Chess_Tournament=None
 form_Bear_Middletown_Chess_Coaching=None
 form_New_Jersey_Chess_Tournament=None
+form_Basics_Of_Chess=None
 
 def init_db(app):
-    global client, db, fs, admin_collection, users_collection,schoolform_coll,demo_user,app_signup,bulkemail,email_request,form_chess_club,form_Wilmington_Chess_Coaching,form_Bear_Middletown_Chess_Tournament,form_Bear_Middletown_Chess_Coaching,form_New_Jersey_Chess_Tournament
+    global client, db, fs, admin_collection, users_collection,schoolform_coll,demo_user,app_signup,bulkemail,email_request,form_chess_club,form_Wilmington_Chess_Coaching,form_Bear_Middletown_Chess_Tournament,form_Bear_Middletown_Chess_Coaching,form_New_Jersey_Chess_Tournament,form_Basics_Of_Chess
     mongo_uri = os.getenv('MONGO_URI')
     client = MongoClient(mongo_uri)
     db = client.chessDb
@@ -37,4 +38,5 @@ def init_db(app):
     form_Bear_Middletown_Chess_Tournament=schoolformdb.form_Bear_Middletown_Chess_Tournament
     form_Bear_Middletown_Chess_Coaching=schoolformdb.form_Bear_Middletown_Chess_Coaching
     form_New_Jersey_Chess_Tournament=schoolformdb.form_New_Jersey_Chess_Tournament
+    form_Basics_Of_Chess=schoolformdb.form_Basics_Of_Chess
     fs = GridFS(db)
