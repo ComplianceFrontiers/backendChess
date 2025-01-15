@@ -154,3 +154,91 @@ def get_form_Basics_Of_Chess_by_profile_id():
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
+@form_Basics_Of_Chess_bp.route('/form_Basics_Of_Chess_update_forms', methods=['POST'])
+def update_forms():
+    try:
+        # Parse the incoming JSON data
+        data = request.json
+
+        # Extract the list of updates, each with an email and its associated fields
+        updates = data.get('updates', [])  # Expecting a list of update objects
+
+        # Ensure that updates are provided and it's a non-empty list
+        if not updates or not isinstance(updates, list):
+            return jsonify({"error": "A list of updates is required!"}), 400
+
+        # Process each update
+        update_results = []
+        for update in updates:
+            email = update.get('email')
+            payment_status = update.get('payment_status')
+            group = update.get('group')
+            level = update.get('level')
+
+            # Ensure email is provided
+            if not email:
+                update_results.append({"email": None, "status": "Email is required"})
+                continue
+
+            # Prepare the update data
+            update_data = {
+                "payment_status": payment_status,
+                "group": group,
+                "level": level
+            }
+
+            # Update all documents with the specified email
+            result = form_Basics_Of_Chess.update_many(
+                {"email": email},
+                {"$set": update_data}
+            )
+
+            if result.matched_count > 0:
+                update_results.append({
+                    "email": email,
+                    "status": f"Updated {result.modified_count} record(s) successfully"
+                })
+            else:
+                update_results.append({"email": email, "status": "No matching email found"})
+
+        return jsonify({"results": update_results}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+def send_email(email, online_portal_link):
+    DISPLAY_NAME="Chess Champs Academy"
+    sender_email = "connect@chesschamps.us"
+    sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
+    subject = "Your Access Credentials for Chess Champs Academy Portal"
+
+    body = (
+            f"Dear Patron,\n\n"
+            f"We are pleased to provide you with the access credentials for the Chess Champs Academy portal. Below are your login details:\n"
+            f"• Access Link: {online_portal_link}\n"
+            f"• Access Email: {email}\n\n"
+            f"Please use these credentials to log in to the portal and explore the resources available. An OTP will be generated upon your first login. "
+            f"You will remain logged in unless you click 'Logout' or access the portal from a different device. For security purposes, we kindly recommend not sharing the link with others.\n\n"
+            f"If you have any questions or need further assistance, feel free to contact our support team.\n\n"
+            f"Warm Regards ,\n\n"
+            f"Training Team\n"
+            f"Chess Champs Academy"
+        )
+
+    msg = MIMEMultipart()
+    msg['From'] = f'{DISPLAY_NAME} <{sender_email}>'
+    msg['To'] = email
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'plain'))
+
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        server.sendmail(sender_email, email, msg.as_string())
+        server.quit()
+        return True
+    except Exception as e:
+        print(f"Failed to send email: {str(e)}")
+        return False
