@@ -128,12 +128,10 @@ def masterlist_bp_delete_records_by_profile_ids():
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
-@masterlist_bp.route('/get_forms_masterlist', methods=['GET'])
-def get_forms_masterlist():
+@masterlist_bp.route('/get_form_master_list', methods=['GET'])
+def get_master_list():
     try:
-        # Fetch all documents from each collection
-        records = []
-
+        # List of all collections to fetch data from
         collections = [
             form_chess_club,
             form_Wilmington_Chess_Coaching,
@@ -144,25 +142,30 @@ def get_forms_masterlist():
             masterlist
         ]
 
+        # Fetch all records from collections
+        all_records = []
         for collection in collections:
-            # Append all records from the collection to the list
-            records.extend(list(collection.find({}, {'_id': 0})))
+            all_records.extend(collection.find({}, {'_id': 0}))
 
-        # Convert date and time strings into a single datetime object for sorting
-        for record in records:
-            record['datetime'] = datetime.strptime(f"{record['date']} {record['time']}", "%m-%d-%Y %H:%M:%S")
+        # Merge records by email
+        merged_records = {}
+        for record in all_records:
+            email = record.get('email')
+            if email:
+                # Use `setdefault` to initialize or merge the record
+                existing_record = merged_records.setdefault(email, {})
+                for key, value in record.items():
+                    if key not in existing_record or not existing_record[key]:
+                        existing_record[key] = value
 
-        # Sort records by the 'datetime' field in descending order
-        sorted_records = sorted(records, key=lambda x: x['datetime'], reverse=True)
+        # Convert merged records to a list
+        result = list(merged_records.values())
 
-        # Remove the 'datetime' field before returning, if needed
-        for record in sorted_records:
-            record.pop('datetime', None)
-
-        return jsonify(sorted_records), 200
+        return jsonify(result), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @masterlist_bp.route('/masterlist_by_profile_id', methods=['GET'])
 def get_masterlist_by_profile_id():
