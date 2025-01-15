@@ -396,12 +396,8 @@ def send_mails_for_updated_records():
             return jsonify({"error": "No updates provided!"}), 400
 
         for update in updates:
-            profile_id = update.get('profile_id')
             group = update.get('group')
             email = update.get('email')
-
-            if not profile_id or not email:
-                return jsonify({"error": "Profile ID and email are required for each update!"}), 400
 
             # Determine the online portal link based on the group
             if group == "In School Program":
