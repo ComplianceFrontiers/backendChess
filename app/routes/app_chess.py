@@ -2,7 +2,7 @@ import random
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
 from app.database import app_signup
-from app.database import schoolform_coll
+from app.database import form_Basics_Of_Chess
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
@@ -26,7 +26,7 @@ def generate_unique_profile_id():
     while True:
         profile_id = str(random.randint(100000, 999999))  # Generate a random 6-digit number
         # Check if the profile_id already exists in the database
-        if schoolform_coll.count_documents({"profile_id": profile_id}) == 0:
+        if form_Basics_Of_Chess.count_documents({"profile_id": profile_id}) == 0:
             return profile_id
         
 @appchess_bp.route('/new_app_user', methods=['POST'])
@@ -43,7 +43,7 @@ def new_app_user():
             return jsonify({"error": "Email is required"}), 400
 
         # Check if the email exists in the database
-        existing_user = schoolform_coll.find_one({"email": email})
+        existing_user = form_Basics_Of_Chess.find_one({"email": email})
         
         if existing_user:
             # Email exists, return success with "old"
@@ -72,7 +72,7 @@ def new_app_user():
             }
 
             # Insert the new document into MongoDB
-            schoolform_coll.insert_one(form_data)
+            form_Basics_Of_Chess.insert_one(form_data)
 
             return jsonify({"success": "new", "profile_id": profile_id}), 201
 

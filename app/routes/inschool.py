@@ -13,7 +13,7 @@ import uuid
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from app.database import schoolform_coll,bulkemail
+from app.database import form_Basics_Of_Chess,bulkemail
 
 
 inschool_bp = Blueprint('inschool', __name__)
@@ -64,14 +64,14 @@ def signinschool():
     device_name = login_data.get('device_name')
     
     # Retrieve the user from the database
-    user = schoolform_coll.find_one({'email': email})
+    user = form_Basics_Of_Chess.find_one({'email': email})
 
     if not user:
         return jsonify({'success': False, 'message': 'Email is not registered.'}), 400
 
     # Handle group assignment if not already set
     if 'group' not in user or not user['group']:
-        schoolform_coll.update_one({'email': email}, {'$set': {'group': 'New App User', 'level': 'Level 1', 'payment_status': False}})
+        form_Basics_Of_Chess.update_one({'email': email}, {'$set': {'group': 'New App User', 'level': 'Level 1', 'payment_status': False}})
         user['group'] = 'New App User'  # Update the local variable for further logic
     
     if user["group"] in ["In School Program", "New App User"] and user.get("onlinePurchase", True):
@@ -89,12 +89,12 @@ def handle_device_and_otp(user, device_name, email):
     
     # Generate a new session_id
     session_id = str(uuid.uuid4())
-    schoolform_coll.update_one({'email': email}, {'$set': {'session_id': session_id, 'device_name': device_name}})
+    form_Basics_Of_Chess.update_one({'email': email}, {'$set': {'session_id': session_id, 'device_name': device_name}})
     
     # Continue with OTP process
     if 'otp' not in user or user['otp'] is None:
         otp = random.randint(100000, 999999)
-        schoolform_coll.update_one({'email': email}, {'$set': {'otp': otp}})
+        form_Basics_Of_Chess.update_one({'email': email}, {'$set': {'otp': otp}})
         send_otp(email, otp)
         return jsonify({'success': True, 'message': 'OTP sent to email.', 'otp_required': True}), 200
     else:
@@ -118,9 +118,9 @@ def check_stripe_payment(user, email, device_name):
         return jsonify({'success': False, 'message': 'Email not registered in the paid users list.'}), 400
     # Update user payment status and process device and OTP
     for paid_email in paid_emails:
-        user = schoolform_coll.find_one({"email": paid_email})
+        user = form_Basics_Of_Chess.find_one({"email": paid_email})
         if user:
-            schoolform_coll.update_one({"email": paid_email}, {"$set": {"payment_status": True,"onlinePurchase":True,'group': 'In School Program','strip':"true"}})
+            form_Basics_Of_Chess.update_one({"email": paid_email}, {"$set": {"payment_status": True,"onlinePurchase":True,'group': 'In School Program','strip':"true"}})
             return handle_device_and_otp(user, device_name, paid_email)
 
     return jsonify({'success': True, 'message': 'OTP sent to email.', 'otp_required': True,'emails':paid_emails}), 200
@@ -134,7 +134,7 @@ def get_record_by_profile_id():
             return jsonify({"error": "profile_id is required"}), 400
 
         # Query the schoolform collection for the record
-        record = schoolform_coll.find_one({"profile_id": profile_id}, {"_id": 0})  # Exclude the "_id" field
+        record = form_Basics_Of_Chess.find_one({"profile_id": profile_id}, {"_id": 0})  # Exclude the "_id" field
 
         # If not found in schoolform collection, check the bulkemail collection
         if not record:
@@ -164,7 +164,7 @@ def delete_records_by_profile_ids():
 
         for profile_id in profile_ids:
             # Attempt to delete the record from the schoolform collection
-            schoolform_result = schoolform_coll.delete_one({"profile_id": profile_id})
+            schoolform_result = form_Basics_Of_Chess.delete_one({"profile_id": profile_id})
 
             if schoolform_result.deleted_count == 0:
                 # If not found in schoolform, try the bulkemail collection
@@ -196,7 +196,7 @@ def delete_session_inschool():
         return jsonify({'success': False, 'message': 'Email is required.'}), 400
 
     # Find the user and update
-    result = schoolform_coll.update_one(
+    result = form_Basics_Of_Chess.update_one(
         {'email': email},
         {'$unset': {'session_id': '','device_name':''}}
     )
@@ -217,13 +217,13 @@ def verify_otp_inschool():
         return jsonify({'success': False, 'message': 'Email and OTP are required.'}), 400
 
     # Find the user by email
-    user = schoolform_coll.find_one({'email': email})
+    user = form_Basics_Of_Chess.find_one({'email': email})
     print(str(user.get('otp')) == otp)
 
     # Check if user exists and OTP matches
     if user and str(user.get('otp')) == otp:
         # OTP matches, clear it from the database
-        schoolform_coll.update_one({'email': email}, {'$unset': {'otp': ""}})
+        form_Basics_Of_Chess.update_one({'email': email}, {'$unset': {'otp': ""}})
         return jsonify({'success': True, 'message': 'OTP verified successfully.'}), 200
     else:
         return jsonify({'success': False, 'message': 'Invalid OTP or email.'}), 400
@@ -236,7 +236,7 @@ def get_user_inschool_details():
         return jsonify({'success': False, 'message': 'Email parameter is required'}), 400
     
     # Retrieve the user from the database, excluding the _id field
-    user = schoolform_coll.find_one(
+    user = form_Basics_Of_Chess.find_one(
         {'email': email},
         {'_id': 0}  # Exclude _id field from the results
     )
@@ -259,7 +259,7 @@ def update_level_when_completed():
         return jsonify({'success': False, 'message': 'Email and level parameters are required'}), 400
 
     # Update the user's level in the database
-    result = schoolform_coll.update_one(
+    result = form_Basics_Of_Chess.update_one(
         {'email': email},  # Find user by email
         {'$set': {'level': level}}  # Set the new level
     )
@@ -280,7 +280,7 @@ def update_user_inschool_image():
     
     try:
         # Update user's image in the database
-        user = schoolform_coll.find_one_and_update(
+        user = form_Basics_Of_Chess.find_one_and_update(
             {'profile_id': profile_id},
             {'$set': {'image': image_url}},
             return_document=ReturnDocument.AFTER
@@ -321,7 +321,7 @@ def arena_user_details_inschool():
         return jsonify({'success': False, 'message': f'Category must be one of {default_categories}'}), 400
     
     # Retrieve the user from the database
-    user = schoolform_coll.find_one({'email': email})
+    user = form_Basics_Of_Chess.find_one({'email': email})
     
     if user:
         # Initialize PuzzleArena if not present
@@ -343,7 +343,7 @@ def arena_user_details_inschool():
                 existing_puzzles.update(new_puzzles)
         
         # Save the updated user back to the database
-        schoolform_coll.update_one({'email': email}, {'$set': user})
+        form_Basics_Of_Chess.update_one({'email': email}, {'$set': user})
         
         return jsonify({'success': True, 'message': user['PuzzleArena']}), 200
     else:
@@ -395,7 +395,7 @@ def update_puzzle_started_inschool():
         return jsonify({'success': False, 'message': f'Category must be one of {default_categories}'}), 400
 
     # Retrieve the user from the database
-    user = schoolform_coll.find_one({'email': email})
+    user = form_Basics_Of_Chess.find_one({'email': email})
 
     if user:
         # Check if the specified title and category exist in the user's PuzzleArena
@@ -422,7 +422,7 @@ def update_puzzle_started_inschool():
                 puzzle_data['option_guessed'] = option_guessed
             puzzle_data['timer']=timer
             # Update the user document in the database
-            schoolform_coll.update_one(
+            form_Basics_Of_Chess.update_one(
                 {'email': email},
                 {'$set': {f'PuzzleArena.{category}.{title}.{puzzle_no}': puzzle_data}}
             )
@@ -448,7 +448,7 @@ def get_Arena_user_inschool():
         return jsonify({'success': False, 'message': f'Category must be one of {default_categories}'}), 400
     
     # Retrieve the user from the database
-    user = schoolform_coll.find_one({'email': email})
+    user = form_Basics_Of_Chess.find_one({'email': email})
     
     if user:
         if 'PuzzleArena' not in user:
@@ -482,7 +482,7 @@ def get_puzzle_visited_info_inschool():
         return jsonify({'success': False, 'message': f'Category must be one of {default_categories}'}), 400
 
     # Retrieve the user from the database
-    user = schoolform_coll.find_one({'email': email})
+    user = form_Basics_Of_Chess.find_one({'email': email})
 
     if user:
         # Check if the specified category and title exist in the user's PuzzleArena
@@ -507,7 +507,7 @@ def update_registered_courses_inschool():
         return jsonify({'success': False, 'message': 'Email, course_title, and status are required'}), 400
 
     # Retrieve the user from the database
-    user = schoolform_coll.find_one({'email': email})
+    user = form_Basics_Of_Chess.find_one({'email': email})
 
     if user:
         # Initialize registered_courses if it does not exist
@@ -523,13 +523,13 @@ def update_registered_courses_inschool():
                 return jsonify({'success': True, 'message': 'Cannot update to In Progress as the course is already completed'}), 200
 
             # Update the existing course entry
-            schoolform_coll.update_one(
+            form_Basics_Of_Chess.update_one(
                 {'email': email, 'registered_inschool_courses.course_title': course_title},
                 {'$set': {'registered_inschool_courses.$.status': status}}
             )
         else:
             # Add a new course entry
-            schoolform_coll.update_one(
+            form_Basics_Of_Chess.update_one(
                 {'email': email},
                 {'$push': {'registered_inschool_courses': {'course_title': course_title, 'status': status, 'completed': 0}}}
             )
@@ -555,7 +555,7 @@ def update_course_completion_inschool():
     completed = data['completed']
 
     # Search for the user by email
-    existing_user = schoolform_coll.find_one({'email': email})
+    existing_user = form_Basics_Of_Chess.find_one({'email': email})
 
     if not existing_user:
         return jsonify({'error': 'User not found'}), 404
@@ -574,7 +574,7 @@ def update_course_completion_inschool():
             # Check if the new completed value is greater
             if course['completed'] < completed:
                 # Update the completed_percentage
-                schoolform_coll.update_one(
+                form_Basics_Of_Chess.update_one(
                     {'email': email, 'registered_inschool_courses.course_title': course_title},
                     {'$set': {'registered_inschool_courses.$.completed': completed}}
                 )
@@ -598,7 +598,7 @@ def calculate_scores_inschool():
     email = data['email']
     
     # Retrieve the user from the database
-    user = schoolform_coll.find_one({'email': email})
+    user = form_Basics_Of_Chess.find_one({'email': email})
     
     if not user:
         return jsonify({'success': False, 'message': 'User not found'}), 404
@@ -621,7 +621,7 @@ def calculate_scores_inschool():
                 scores[category] += puzzle.get('score', 0)
     
     # Update the user's record with the calculated scores
-    update_result = schoolform_coll.update_one(
+    update_result = form_Basics_Of_Chess.update_one(
         {'email': email},
         {'$set': {'scores': scores}}
     )

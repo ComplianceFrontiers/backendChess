@@ -1,7 +1,7 @@
 import random
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
-from app.database import schoolform_coll
+from app.database import form_Basics_Of_Chess
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -17,7 +17,7 @@ def generate_unique_profile_id():
     while True:
         profile_id = str(random.randint(100000, 999999))  # Generate a random 6-digit number
         # Check if the profile_id already exists in the database
-        if schoolform_coll.count_documents({"profile_id": profile_id}) == 0:
+        if form_Basics_Of_Chess.count_documents({"profile_id": profile_id}) == 0:
             return profile_id
 
 @schoolform_bp.route('/submit_form', methods=['POST'])
@@ -80,7 +80,7 @@ def submit_form():
                    }
 
         # Insert into MongoDB
-        schoolform_coll.insert_one(form_data)
+        form_Basics_Of_Chess.insert_one(form_data)
 
         return jsonify({"message": "Form submitted successfully!", "profile_id": profile_id}), 201
 
@@ -91,7 +91,7 @@ def submit_form():
 def get_forms():
     try:
         # Fetch all documents from the collection in descending order
-        records = list(schoolform_coll.find({}, {'_id': 0}).sort([('_id', -1)]))  # Sort by '_id' in descending order
+        records = list(form_Basics_Of_Chess.find({}, {'_id': 0}).sort([('_id', -1)]))  # Sort by '_id' in descending order
         
         return jsonify(records), 200
 
@@ -117,7 +117,7 @@ def update_student_records():
             return jsonify({"error": "No fields to update"}), 400
 
         # Update the document where the email matches
-        result = schoolform_coll.update_one(
+        result = form_Basics_Of_Chess.update_one(
             {"email": email},  # Filter by email
             {"$set": update_data}  # Update the provided fields
         )
@@ -143,7 +143,7 @@ def get_forms_by_group():
             filter_condition['group'] = group
 
         # Fetch documents matching the dynamic filter condition
-        records = list(schoolform_coll.find(filter_condition, {'_id': 0}))  # Exclude the MongoDB ID field
+        records = list(form_Basics_Of_Chess.find(filter_condition, {'_id': 0}))  # Exclude the MongoDB ID field
 
         return jsonify(records), 200
 
@@ -333,7 +333,7 @@ def update_forms():
             }
 
             # Update the document
-            result = schoolform_coll.update_one(
+            result = form_Basics_Of_Chess.update_one(
                 {"profile_id": profile_id},
                 {"$set": update_data}
             )

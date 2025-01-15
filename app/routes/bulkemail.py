@@ -1,7 +1,7 @@
 import random
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
-from app.database import bulkemail,schoolform_coll
+from app.database import bulkemail,form_Basics_Of_Chess
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -31,7 +31,7 @@ def signup_bulk_email():
         print(data)
 
         existing_record = bulkemail.find_one({"email": data["email"]})
-        existing_in_schoolcol = schoolform_coll.find_one({"email": data["email"]})
+        existing_in_schoolcol = form_Basics_Of_Chess.find_one({"email": data["email"]})
 
         if existing_record or existing_in_schoolcol:
             # If the email exists, update the existing record
@@ -144,7 +144,7 @@ def get_forms2():
 def get_master_list():
     try:
         # Fetch records from both collections
-        schoolform_records = list(schoolform_coll.find({}, {'_id': 0}))
+        schoolform_records = list(form_Basics_Of_Chess.find({}, {'_id': 0}))
         bulkemail_records = list(bulkemail.find({}, {'_id': 0}))
 
         # Combine the records
