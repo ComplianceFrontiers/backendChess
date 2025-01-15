@@ -1,8 +1,7 @@
 import random
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
-from app.database import masterlist
-
+from app.database import form_chess_club,form_Wilmington_Chess_Coaching,form_Bear_Middletown_Chess_Tournament,form_Bear_Middletown_Chess_Coaching,form_New_Jersey_Chess_Tournament,form_Basics_Of_Chess,masterlist
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
@@ -132,10 +131,35 @@ def masterlist_bp_delete_records_by_profile_ids():
 @masterlist_bp.route('/get_forms_masterlist', methods=['GET'])
 def get_forms_masterlist():
     try:
-        # Fetch all documents from the collection in descending order
-        records = list(masterlist.find({}, {'_id': 0}).sort([('_id', -1)]))  # Sort by '_id' in descending order
-        
-        return jsonify(records), 200
+        # Fetch all documents from each collection
+        records = []
+
+        collections = [
+            form_chess_club,
+            form_Wilmington_Chess_Coaching,
+            form_Bear_Middletown_Chess_Tournament,
+            form_Bear_Middletown_Chess_Coaching,
+            form_New_Jersey_Chess_Tournament,
+            form_Basics_Of_Chess,
+            masterlist
+        ]
+
+        for collection in collections:
+            # Append all records from the collection to the list
+            records.extend(list(collection.find({}, {'_id': 0})))
+
+        # Convert date and time strings into a single datetime object for sorting
+        for record in records:
+            record['datetime'] = datetime.strptime(f"{record['date']} {record['time']}", "%m-%d-%Y %H:%M:%S")
+
+        # Sort records by the 'datetime' field in descending order
+        sorted_records = sorted(records, key=lambda x: x['datetime'], reverse=True)
+
+        # Remove the 'datetime' field before returning, if needed
+        for record in sorted_records:
+            record.pop('datetime', None)
+
+        return jsonify(sorted_records), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
