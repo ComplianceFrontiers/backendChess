@@ -103,9 +103,9 @@ def handle_device_and_otp(user, device_name, email):
 
 def check_stripe_payment(user, email, device_name):
     # Stripe API for payment status
-    stripe_url = 'https://api.stripe.com/v1/checkout/sessions?expand[]=data.customer&limit=100&payment_link=plink_1QZSvrAL8dlaQidpcjUwyTk9'
-    username = 'sk_test_51QZAkcAL8dlaQidprC4j41YPnrwBla20ydt0186n8OkC42OHIoIfOymIu2gkwPPqUIwPQzVUchmc6WeVsUhGO8x100suZdMZtg'
-    password = 'Ramya@2002'
+    stripe_url = 'https://api.stripe.com/v1/checkout/sessions?expand[]=data.customer&limit=100&payment_link=plink_1QhjFJKznsvfBIk5vTkwwrsm'
+    username = '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'
+    password = 'ComplianceFrontiers@2025'
     
     response = requests.get(stripe_url, auth=HTTPBasicAuth(username, password))
     
