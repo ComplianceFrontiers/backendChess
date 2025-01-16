@@ -14,8 +14,13 @@ from datetime import datetime
 
 form_Basics_Of_Chess_bp = Blueprint('form_Basics_Of_Chess', __name__)
 
+# Get current time in UTC
+utc_time = datetime.now(pytz.utc)
+
+# Convert UTC to New York time
 new_york_tz = pytz.timezone('America/New_York')
-current_datetime = datetime.now(new_york_tz)
+current_datetime = utc_time.astimezone(new_york_tz)
+
 current_date = current_datetime.strftime('%m-%d-%Y')  # Format as MM-DD-YYYY
 current_time = current_datetime.strftime('%H:%M:%S')  # Format as HH:MM:SS
 
