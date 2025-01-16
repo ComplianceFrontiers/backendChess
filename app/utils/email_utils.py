@@ -67,6 +67,6 @@ def send_email_BOC_list(email, online_portal_link):
         server.login(sender_email, sender_password)
         server.sendmail(sender_email, email, msg.as_string())
         server.quit()
-        print("Email sent successfully!")
+        return True
     except Exception as e:
-        print(f"Failed to send email. Error: {e}")
+        return False
