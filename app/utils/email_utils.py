@@ -50,7 +50,7 @@ def send_email_BOC_list(email, online_portal_link):
         f"For security reasons, we kindly ask that you do not share your access credentials with others.\n\n"
         f"Important Note: Access to the portal will be activated upon successful payment.\n\n"
         f"If you have any questions or require assistance, please feel free to contact our support team.\n\n"
-        f"Warm regards,\n"
+        f"Warm regards,\n\n"
         f"Training Team\n"
         f"Chess Champs Academy"
     )
