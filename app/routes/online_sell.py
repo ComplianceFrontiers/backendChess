@@ -6,7 +6,7 @@ from app.database import form_Basics_Of_Chess
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
-from app.utils.email_utils import send_email
+from app.utils.email_utils import send_email,send_email_BOC_list
 
 online_Sell_bp = Blueprint('online_Sell', __name__)
 
@@ -170,8 +170,8 @@ def send_email(email, online_portal_link):
         return False
 
 # API endpoint to trigger the email
-@online_Sell_bp.route('/send_email_api_to_online_purchase_user', methods=['POST'])
-def send_email_api_to_online_purchase_user():
+@online_Sell_bp.route('/send_email_online_purchase_user_BOC_online', methods=['POST'])
+def send_email_online_purchase_user_BOC_online():
     try:
         # Parse the incoming JSON data
         data = request.json
@@ -183,7 +183,7 @@ def send_email_api_to_online_purchase_user():
         online_portal_link = "https://chess-in-school.vercel.app/"
         
         # Call the send_email function
-        email_sent = send_email(email, online_portal_link)
+        email_sent = send_email_BOC_list(email, online_portal_link)
         
         if email_sent:
             return jsonify({"success": "Email sent successfully"}), 200
@@ -192,4 +192,3 @@ def send_email_api_to_online_purchase_user():
     
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-
