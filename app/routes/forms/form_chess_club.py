@@ -8,12 +8,12 @@ from email.mime.text import MIMEText
 import smtplib
 from flask import Blueprint, request, jsonify
 from app.utils.email_utils import send_email
+import pytz
 from datetime import datetime
 
-
 form_chess_club_bp = Blueprint('form_chess_club', __name__)
-# Get current date and time
-current_datetime = datetime.now()
+new_york_tz = pytz.timezone('America/New_York')
+current_datetime = datetime.now(new_york_tz)
 current_date = current_datetime.strftime('%m-%d-%Y')  # Format as MM-DD-YYYY
 current_time = current_datetime.strftime('%H:%M:%S')  # Format as HH:MM:SS
 
