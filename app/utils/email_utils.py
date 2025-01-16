@@ -33,9 +33,6 @@ def send_email(email, session_link, date, time, coach_name):
     server.sendmail(sender_email, email, text)
     server.quit()
 
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
 def send_email_BOC_list(email, online_portal_link):
     sender_email = "connect@chesschamps.us"
