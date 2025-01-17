@@ -40,5 +40,5 @@ def init_db(app):
     form_Bear_Middletown_Chess_Coaching=schoolformdb.form_Bear_Middletown_Chess_Coaching
     form_New_Jersey_Chess_Tournament=schoolformdb.form_New_Jersey_Chess_Tournament
     form_Basics_Of_Chess=schoolformdb.form_Basics_Of_Chess
-    masterlist=schoolform_coll.masterlist
+    masterlist=schoolformdb.masterlist
     fs = GridFS(db)
