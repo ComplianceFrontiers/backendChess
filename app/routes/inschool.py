@@ -76,6 +76,8 @@ def signinschool():
     
     if user["group"] in ["In School Program", "New App User"] and user.get("onlinePurchase", True):
         return handle_device_and_otp(user, device_name, email)
+    if user["group"] in ["In School Program"]:
+        return handle_device_and_otp(user, device_name, email)
     elif not user.get("onlinePurchase", False):
         return check_stripe_payment(user, email, device_name)
     else:
