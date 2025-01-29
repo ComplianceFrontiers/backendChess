@@ -270,7 +270,7 @@ def get_masterlist_by_email():
 
         # If no record with 'email_request' = True was found
         if not found_email_request_true:
-            return jsonify({"error": "Record not found"}), 404
+            return jsonify({"error": "No record found for this email"}), 404
 
     except Exception as e:
         # Log the error for debugging (optional)
