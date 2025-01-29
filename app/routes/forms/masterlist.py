@@ -161,7 +161,9 @@ def get_master_list():
         # Fetch all records from collections
         all_records = []
         for collection in collections:
-            all_records.extend(collection.find({}, {'_id': 0}))
+            # Fetch records where email_request is not false
+            records = collection.find({"email_request": {"$ne": False}}, {'_id': 0})
+            all_records.extend(records)
 
         # Merge records by email
         merged_records = {}
