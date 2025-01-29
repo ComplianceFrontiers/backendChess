@@ -246,43 +246,17 @@ def get_masterlist_by_email():
             masterlist
         ]
 
-        # Fetch all records matching the email
-        all_records = []
+        # Search for the first record matching the email
         for collection in collections:
-            records = collection.find({"email": email}, {'_id': 0})  # Exclude MongoDB's default '_id' field
-            all_records.extend(records)
+            record = collection.find_one({"email": email}, {'_id': 0})  # Exclude MongoDB's default '_id' field
+            if record:
+                return jsonify(record), 200  # Return the first match found
 
         # If no records found
-        if not all_records:
-            return jsonify({"error": "No records found for the provided email"}), 404
-
-        # Merge records by profile_id (or any unique identifier)
-        merged_records = {}
-        for record in all_records:
-            profile_id = record.get('profile_id')
-            if profile_id:
-                # Use `setdefault` to initialize or merge the record
-                existing_record = merged_records.setdefault(profile_id, {})
-                for key, value in record.items():
-                    if key not in existing_record or not existing_record[key]:
-                        existing_record[key] = value
-
-        # Convert merged records to a list
-        result = list(merged_records.values())
-
-        # Sort the result by the 'date' field in descending order
-        # Assumes the 'date' field is in the format 'MM-DD-YYYY'
-        sorted_result = sorted(
-            result,
-            key=lambda x: datetime.strptime(x.get('date', '01-01-1970'), '%m-%d-%Y'),
-            reverse=True
-        )
-
-        return jsonify(sorted_result), 200
+        return jsonify({"error": "No records found for the provided email"}), 404
 
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
-    
 
 def send_email(email, online_portal_link):
     DISPLAY_NAME="Chess Champs Academy"
