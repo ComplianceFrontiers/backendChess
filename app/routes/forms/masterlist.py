@@ -224,6 +224,66 @@ def get_masterlist_by_profile_id():
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
+
+@masterlist_bp.route('/get_masterlist_by_email', methods=['GET'])
+def get_masterlist_by_email():
+    try:
+        # Extract 'email' from query parameters
+        email = request.args.get('email')
+
+        # Validate the input
+        if not email:
+            return jsonify({"error": "Email is required"}), 400
+
+        # List of all collections to search
+        collections = [
+            form_chess_club,
+            form_Wilmington_Chess_Coaching,
+            form_Bear_Middletown_Chess_Tournament,
+            form_Bear_Middletown_Chess_Coaching,
+            form_New_Jersey_Chess_Tournament,
+            form_Basics_Of_Chess,
+            masterlist
+        ]
+
+        # Fetch all records matching the email
+        all_records = []
+        for collection in collections:
+            records = collection.find({"email": email}, {'_id': 0})  # Exclude MongoDB's default '_id' field
+            all_records.extend(records)
+
+        # If no records found
+        if not all_records:
+            return jsonify({"error": "No records found for the provided email"}), 404
+
+        # Merge records by profile_id (or any unique identifier)
+        merged_records = {}
+        for record in all_records:
+            profile_id = record.get('profile_id')
+            if profile_id:
+                # Use `setdefault` to initialize or merge the record
+                existing_record = merged_records.setdefault(profile_id, {})
+                for key, value in record.items():
+                    if key not in existing_record or not existing_record[key]:
+                        existing_record[key] = value
+
+        # Convert merged records to a list
+        result = list(merged_records.values())
+
+        # Sort the result by the 'date' field in descending order
+        # Assumes the 'date' field is in the format 'MM-DD-YYYY'
+        sorted_result = sorted(
+            result,
+            key=lambda x: datetime.strptime(x.get('date', '01-01-1970'), '%m-%d-%Y'),
+            reverse=True
+        )
+
+        return jsonify(sorted_result), 200
+
+    except Exception as e:
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+    
+
 def send_email(email, online_portal_link):
     DISPLAY_NAME="Chess Champs Academy"
     sender_email = "connect@chesschamps.us"
