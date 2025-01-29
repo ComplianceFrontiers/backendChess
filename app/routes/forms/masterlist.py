@@ -237,6 +237,11 @@ def get_masterlist_by_email():
         if not email:
             return jsonify({"error": "Email is required"}), 400
 
+        # Optional: Validate email format (simple regex)
+        import re
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            return jsonify({"error": "Invalid email format"}), 400
+
         # List of all collections to search
         collections = [
             form_chess_club,
@@ -258,6 +263,8 @@ def get_masterlist_by_email():
         return jsonify({"error": "No records found for the provided email"}), 404
 
     except Exception as e:
+        # Log the error for debugging (optional)
+        print(f"Error in get_masterlist_by_email: {e}")
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 
