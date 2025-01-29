@@ -253,14 +253,24 @@ def get_masterlist_by_email():
             masterlist
         ]
 
-        # Search for the first record matching the email
-        for collection in collections:
-            record = collection.find_one({"email": email}, {'_id': 0})  # Exclude MongoDB's default '_id' field
-            if record:
-                return jsonify(record), 200  # Return the first match found
+        # Initialize a flag to check if any record has 'email_request' set to True
+        has_email_request_true = False
+        all_records = []
 
-        # If no records found
-        return jsonify({"error": "No records found for the provided email"}), 404
+        # Search through all collections for records with 'email_request' = True
+        for collection in collections:
+            records = collection.find({"email": email, "email_request": True}, {'_id': 0})  # Exclude MongoDB's default '_id' field
+            if records.count() > 0:
+                has_email_request_true = True
+                # Append all matching records to the result list
+                all_records.extend(records)
+
+        # If no record with 'email_request' = True was found
+        if not has_email_request_true:
+            return jsonify({"error": "No records with email_request field as true found for the provided email"}), 404
+
+        # Return all records where 'email_request' is True
+        return jsonify(all_records), 200
 
     except Exception as e:
         # Log the error for debugging (optional)
