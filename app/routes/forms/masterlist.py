@@ -258,6 +258,53 @@ def get_masterlist_by_email():
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
+
+@masterlist_bp.route('/update_masterlist_by_email', methods=['PUT'])
+def update_masterlist_by_email():
+    try:
+        # Extract 'email' and 'email_request' from request body
+        data = request.get_json()
+        email = data.get('email')
+        email_request = data.get('email_request')
+
+        # Validate the input
+        if not email or email_request is None:
+            return jsonify({"error": "Both 'email' and 'email_request' are required"}), 400
+
+        # List of all collections to update
+        collections = [
+            form_chess_club,
+            form_Wilmington_Chess_Coaching,
+            form_Bear_Middletown_Chess_Tournament,
+            form_Bear_Middletown_Chess_Coaching,
+            form_New_Jersey_Chess_Tournament,
+            form_Basics_Of_Chess,
+            masterlist
+        ]
+
+        # Update all records matching the email
+        total_updated = 0
+        for collection in collections:
+            result = collection.update_many(
+                {"email": email},  # Filter by email
+                {"$set": {"email_request": email_request}}  # Set the new field
+            )
+            total_updated += result.modified_count  # Track the number of updated records
+
+        # If no records were updated
+        if total_updated == 0:
+            return jsonify({"error": "No records found for the provided email"}), 404
+
+        # Return success response
+        return jsonify({
+            "message": f"Successfully updated {total_updated} records",
+            "email": email,
+            "email_request": email_request
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+    
 def send_email(email, online_portal_link):
     DISPLAY_NAME="Chess Champs Academy"
     sender_email = "connect@chesschamps.us"
