@@ -260,7 +260,7 @@ def get_masterlist_by_email():
         # Search through all collections for records with 'email_request' = True
         for collection in collections:
             records = collection.find({"email": email, "email_request": True}, {'_id': 0})  # Exclude MongoDB's default '_id' field
-            if records.count() > 0:
+            if records:
                 has_email_request_true = True
                 # Append all matching records to the result list
                 all_records.extend(records)
