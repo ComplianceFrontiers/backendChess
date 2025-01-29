@@ -66,6 +66,7 @@ def form_Bear_Middletown_Chess_Coaching_bp_submit():
             "child_grade":child_grade,
             "program":program,
             "USCF_Rating":USCF_Rating,
+            "email_request":True,
             "Bear_Middletown_Chess_Coaching": True,
             "date": current_date,  # Add the current date (MM-DD-YYYY)
             "time": current_time,  # Add the current time (HH:MM:SS)

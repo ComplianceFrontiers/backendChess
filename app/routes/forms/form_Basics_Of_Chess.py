@@ -86,6 +86,7 @@ def form_Basics_Of_Chess_bp_submit():
             "lombardy": lombardy,
             "jcc":jcc,
             "jcc_kp":jcc_kp,
+             "email_request":True,
             "New_Jersey_Masterclass":New_Jersey_Masterclass,
             "onlinePurchase":onlinePurchase,
             "BasicsOfChess_Online":BasicsOfChess_Online,

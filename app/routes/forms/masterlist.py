@@ -46,7 +46,7 @@ def masterlist_bp_submit():
         lombardy = data.get('lombardy', False)  # Default to False if not provided
         jcc = data.get('jcc', False) 
         jcc_kp = data.get('jcc_kp', False) 
-        WhatsApp= data.get('WhatsApp', False) 
+        WhatsApp= data.get('WhatsApp', False)
         Website= data.get('Website', False) 
         New_Jersey_Masterclass = data.get('New_Jersey_Masterclass', False) 
         profile_id = generate_unique_profile_id()
@@ -72,6 +72,7 @@ def masterlist_bp_submit():
             "SchoolName": SchoolName,
             "email": email,
             "phone": phone,
+            "email_request":True,
             "year": Year,
             "program":program,
             "WhatsApp":WhatsApp,

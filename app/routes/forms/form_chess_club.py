@@ -61,6 +61,7 @@ def form_chess_club_bp_submit():
             "phone": phone,
             "year": Year,
             "chess_club": True,
+            "email_request":True,
             "date": current_date,  # Add the current date (MM-DD-YYYY)
             "time": current_time,  # Add the current time (HH:MM:SS)
         }
