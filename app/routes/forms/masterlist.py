@@ -253,24 +253,30 @@ def get_masterlist_by_email():
             masterlist
         ]
 
-        # Initialize a flag to check if any record has 'email_request' set to True
-        has_email_request_true = False
+        # Initialize a flag to check if any record has 'email_request' = True
+        found_email_request_true = False
         all_records = []
 
-        # Search through all collections for records with 'email_request' = True
+        # Search through all collections for records with the provided email
         for collection in collections:
-            records = collection.find({"email": email, "email_request": True}, {'_id': 0})  # Exclude MongoDB's default '_id' field
-            if records:
-                has_email_request_true = True
-                # Append all matching records to the result list
-                all_records.extend(records)
+            records = collection.find({"email": email}, {'_id': 0})  # Exclude MongoDB's default '_id' field
+            for record in records:
+                if record.get("email_request") is True:
+                    found_email_request_true = True
+                    return jsonify(record), 200  # Return the first matching record with 'email_request' = True
+
+                # Collect all records for the email, regardless of 'email_request' value
+                all_records.append(record)
 
         # If no record with 'email_request' = True was found
-        if not has_email_request_true:
-            return jsonify({"error": "No records with email_request field as true found for the provided email"}), 404
+        if not found_email_request_true:
+            return jsonify({"error": "No record with 'email_request' as True found for the provided email"}), 404
 
-        # Return all records where 'email_request' is True
-        return jsonify(all_records), 200
+    except Exception as e:
+        # Log the error for debugging (optional)
+        print(f"Error in get_masterlist_by_email: {e}")
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+
 
     except Exception as e:
         # Log the error for debugging (optional)
