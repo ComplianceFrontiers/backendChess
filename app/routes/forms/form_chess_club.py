@@ -40,6 +40,7 @@ def form_chess_club_bp_submit():
         phone = data.get('phone', "")
         Year = data.get('year', 2025)
         chess_club_middletown = data.get('chess_club_middletown', False)
+        chess_club_pennsylvania = data.get('chess_club_pennsylvania', False)
         profile_id = generate_unique_profile_id()
 
         # Get current date and time
@@ -63,6 +64,7 @@ def form_chess_club_bp_submit():
             "year": Year,
             "chess_club": True,
             "chess_club_middletown":chess_club_middletown,
+            "chess_club_pennsylvania":chess_club_pennsylvania,
             "email_request":True,
             "date": current_date,  # Add the current date (MM-DD-YYYY)
             "time": current_time,  # Add the current time (HH:MM:SS)
