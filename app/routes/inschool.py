@@ -19,7 +19,7 @@ from app.database import form_Basics_Of_Chess,bulkemail
 inschool_bp = Blueprint('inschool', __name__)
 # Email configuration
 SENDER_EMAIL = os.getenv('SENDER_EMAIL', 'connect@chesschamps.us')
-SENDER_PASSWORD = os.getenv('SENDER_PASSWORD', 'iyln tkpp vlpo sjep')
+SENDER_PASSWORD = os.getenv('SENDER_PASSWORD', 'akln niwh wzra ruzf')
 DISPLAY_NAME = "Chess Champs Academy"
 # Utility function to send OTP via email
 def send_otp(email, otp):

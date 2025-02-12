@@ -127,7 +127,7 @@ def online_purchase_user():
 def send_email(email, online_portal_link):
     DISPLAY_NAME = "Chess Champs Academy"
     sender_email = "connect@chesschamps.us"
-    sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
+    sender_password = "akln niwh wzra ruzf"  # Use your app-specific password here
     subject = "Your Access Credentials for Chess Champs Academy Portal"
 
     # Updated body with HTML for red text

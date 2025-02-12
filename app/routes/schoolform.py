@@ -163,7 +163,7 @@ def send_email_school_form_lombardy():
         # Email configuration
         DISPLAY_NAME="Chess Champs Academy"
         sender_email = "connect@chesschamps.us"
-        sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
+        sender_password = "akln niwh wzra ruzf"  # Use your app-specific password here
         subject = "Lombardy Chess Program!"
 
         body = (
@@ -213,7 +213,7 @@ def send_email_school_form_mpes():
         # Email configuration
         DISPLAY_NAME="Chess Champs Academy"
         sender_email = "connect@chesschamps.us"
-        sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
+        sender_password = "akln niwh wzra ruzf"  # Use your app-specific password here
         subject = "MPE Chess Program!"
 
         body = (
@@ -262,7 +262,7 @@ def send_email_school_form_jcc():
         # Email configuration
         DISPLAY_NAME="Chess Champs Academy"
         sender_email = "connect@chesschamps.us"
-        sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
+        sender_password = "akln niwh wzra ruzf"  # Use your app-specific password here
         subject = "Chess Program at JCC!"
         body = (
                 "Dear Parents,\n\n"
@@ -350,7 +350,7 @@ def update_forms():
 def send_email(email, online_portal_link):
     DISPLAY_NAME="Chess Champs Academy"
     sender_email = "connect@chesschamps.us"
-    sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
+    sender_password = "akln niwh wzra ruzf"  # Use your app-specific password here
     subject = "Your Access Credentials for Chess Champs Academy Portal"
 
     body = (

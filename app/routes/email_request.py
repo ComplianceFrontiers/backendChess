@@ -25,7 +25,7 @@ def home121():
 def send_email_to_admin(email,subject, question):
     """Send an email with the subject and question to connect@chesschamps.us."""
     sender_email = "connect@chesschamps.us"
-    sender_password = "iyln tkpp vlpo sjep"  # Replace with your app-specific password
+    sender_password = "akln niwh wzra ruzf"  # Replace with your app-specific password
     recipient_email = "connect@chesschamps.us"
     subject_line = "New Question Submission"
 

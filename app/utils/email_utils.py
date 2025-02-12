@@ -5,7 +5,7 @@ from email.mime.multipart import MIMEMultipart
 DISPLAY_NAME = "Chess Champs Academy"
 def send_email(email, session_link, date, time, coach_name):
     sender_email = "connect@chesschamps.us"
-    sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
+    sender_password = "akln niwh wzra ruzf"  # Use your app-specific password here
     subject = "Your Chess Session Enrollment"
 
     body = (
@@ -37,7 +37,7 @@ def send_email(email, session_link, date, time, coach_name):
 
 def send_email_BOC_list(email, online_portal_link):
     sender_email = "connect@chesschamps.us"
-    sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
+    sender_password = "akln niwh wzra ruzf"  # Use your app-specific password here
     subject = "Welcome to 'Basics of Chess' Online Tutorial"
 
     body = f"""

@@ -24,7 +24,7 @@ def send_course_email1():
     try:
         # Email configuration
         sender_email = "connect@chesschamps.us"
-        sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
+        sender_password = "akln niwh wzra ruzf"  # Use your app-specific password here
         subject = "Course Registration - Action Required"
 
         body = f"""

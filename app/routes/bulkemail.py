@@ -238,7 +238,7 @@ def send_email_school_form_website_joined():
         # Email configuration
         DISPLAY_NAME = "Chess Champs"
         sender_email = "connect@chesschamps.us"
-        sender_password = "iyln tkpp vlpo sjep"  # Use your app-specific password here
+        sender_password = "akln niwh wzra ruzf"  # Use your app-specific password here
         subject = "Welcome to Chess Champs – Thank You for Joining Us!"
 
         # Use HTML for email body to support formatting
