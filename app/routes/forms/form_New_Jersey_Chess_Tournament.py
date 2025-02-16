@@ -179,6 +179,7 @@ def send_confirm_njcc_reg_email():
         Looking forward to an exciting tournament!
 
         Best regards,  
+        
         Sumit Bose  
         +1 (302) 256 - 4141
         """
