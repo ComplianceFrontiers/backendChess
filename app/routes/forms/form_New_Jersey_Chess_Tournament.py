@@ -168,8 +168,6 @@ def send_confirm_njcc_reg_email():
         subject = "Registration Confirmed – Robbinsville Chess Championship"
 
         body = """\
-        Subject: Registration Confirmed – Robbinsville Chess Championship
-
         Hello,
 
         Thank you for registering for the Robbinsville Chess Championship! 
