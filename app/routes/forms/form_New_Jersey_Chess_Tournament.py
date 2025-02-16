@@ -156,3 +156,50 @@ def get_form_New_Jersey_Chess_Tournament_by_profile_id():
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
+@form_New_Jersey_Chess_Tournament_bp.route('/send_confirm_njcc_reg_email', methods=['POST'])
+def send_confirm_njcc_reg_email():
+    data = request.json
+    email = data.get('email')  
+
+    try:
+        # Email configuration
+        sender_email = "connect@chesschamps.us"
+        sender_password = "akln niwh wzra ruzf"  # Use your app-specific password here
+        subject = "Registration Confirmed – Robbinsville Chess Championship"
+
+        body = """\
+        Subject: Registration Confirmed – Robbinsville Chess Championship
+
+        Hello,
+
+        Thank you for registering for the Robbinsville Chess Championship! 
+        We have successfully received your registration and are excited to have you join us for this event.
+
+        We will be sharing additional details as we get closer to the event date. 
+        In the meantime, if you have any questions, feel free to reach out to us at connect@chesschamps.us.
+
+        Looking forward to an exciting tournament!
+
+        Best regards,  
+        Sumit Bose  
+        +1 (302) 256 - 4141
+        """
+
+        # Create the email
+        msg = MIMEMultipart()
+        msg['From'] = sender_email
+        msg['To'] = email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Connect to the Gmail server and send the email
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        text = msg.as_string()
+        server.sendmail(sender_email, email, text)
+        server.quit()
+
+        return jsonify({"message": "Email sent successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
